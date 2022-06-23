@@ -23,7 +23,7 @@ class ApkDownloader:
         
     
     def download(self,url,filename,foldername):
-        folder_path = self.downloads.joinpath(id)
+        folder_path = self.downloads.joinpath(foldername)
         
         if not folder_path.exists():
             folder_path.mkdir()
