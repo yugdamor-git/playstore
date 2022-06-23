@@ -39,11 +39,15 @@ class ApkDownloader:
     def handle_download(self,route):
         url = route.request.url
         print(url)
-
-        return route.continue_()
-        if "download.apkpure.com" in str(url) or "https://m.apkpure.com/" in str(url) or "https://apkpure.com/" in str(url):
+        if "https://m.apkpure.com/" in str(url) or "https://apkpure.com/" in str(url):
             return route.continue_()
         
+        elif "https://download.apkpure.com/" in url:
+            self.db.apk.update_one({"_id":self.current_id},{"$set":{
+                "status":"download",
+                "apk_download_url":url
+            }})
+            return route.abort()
         else:
             return route.abort()
     
@@ -64,7 +68,7 @@ class ApkDownloader:
         try:
             self.driver.page.route("**/*",self.handle_download)
             
-            self.driver.page.on("response",self.handle_response)
+            # self.driver.page.on("response",self.handle_response)
             
             # with self.driver.page.expect_download(timeout=10 * 1000) as download_info:
             self.driver.page.goto(url)
