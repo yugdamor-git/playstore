@@ -17,6 +17,8 @@ class ApkDownloader:
         
         self.downloads = self.cwd.joinpath("downloads")
         
+        self.current_id = None
+        
         if not self.downloads.exists():
             self.downloads.mkdir()
         
@@ -45,24 +47,33 @@ class ApkDownloader:
         else:
             return route.abort()
     
-    def init_download(self,url,id):
+    def handle_response(self,response):
+        url = response.url
         
+        if "https://download.apkpure.com/" in url:
+            self.db.apk.update_one({"_id":self.id},{"$set":{
+                "status":"download",
+                "apk_download_url":url
+            }})
+            
+    
+    def init_download(self,url,id):
+        self.current_id = id
         self.driver.start()
         status = False
         try:
             self.driver.page.route("**/*",self.handle_download)
             
-            with self.driver.page.expect_download(timeout=10 * 1000) as download_info:
-                self.driver.page.goto(url)
+            self.driver.page.on("response",self.handle_response)
             
-            file = download_info.value
+            # with self.driver.page.expect_download(timeout=10 * 1000) as download_info:
+            self.driver.page.goto(url)
             
-            download_url = file.url
+            # file = download_info.value
             
-            self.db.apk.update_one({"_id":id},{"$set":{
-                "status":"download",
-                "apk_download_url":download_url
-            }})
+            # download_url = file.url
+            
+            
             
             status = True
         except Exception as e:
@@ -96,13 +107,13 @@ if __name__ == "__main__":
         
         ad.download(download_url,filename,folder_name)
         
-        db.update_apk(
-            apk["_id"],
-            {
-                "status":"download",
-                "local_file_name":filename
-            }
-        )
+        # db.update_apk(
+        #     apk["_id"],
+        #     {
+        #         "status":"download",
+        #         "local_file_name":filename
+        #     }
+        # )
         # except Exception as e:
             
         #     error_count = apk["error_count"] + 1
