@@ -93,7 +93,7 @@ def download_file(folderName,fileName):
     else:
         ext = "zip"
         
-    file_name = f'{fileName}.{ext}'
+    file_name = apk_data["local_file_name"]
     return send_from_directory(f'/downloads/{folderName}',file_name, as_attachment=True,download_name=f'{apk_data["apk_id"]}.{ext}')
 
 @app.route('/delete-app',methods=["GET"])
