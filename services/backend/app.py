@@ -15,7 +15,13 @@ from jsonschema.exceptions import ValidationError
 from jsonschema.exceptions import SchemaError
 from flask_cors import CORS
 
+from pathlib import Path
+import shutil
 from json_encoder import JSONEncoder
+
+
+DOWNLOADS = Path("/downloads")
+
 
 def validate_payload(data,schema):
     try:
@@ -95,7 +101,15 @@ def delete_app():
     
     package_id = request.args.get("package_id")
     
+    
     db.delete_app(package_id)
+    
+    try:
+        folder = DOWNLOADS.joinpath(package_id)
+        shutil.rmtree(folder)
+    except:
+        pass
+    
     
     return jsonify({'ok': True,"message":"app deleted."}), 200
 
