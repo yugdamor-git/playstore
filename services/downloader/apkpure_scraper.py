@@ -2,7 +2,6 @@ import json
 from bs4 import BeautifulSoup
 import cloudscraper
 from helper import string_to_datetime
-import undetected_chromedriver.v2 as uc
 
 
 class ApkpureScraper:
@@ -13,8 +12,6 @@ class ApkpureScraper:
         'platform': 'android',
         'desktop': False
         })
-        
-        self.driver = uc.Chrome()
         
         self.max_retry = 20
         
@@ -133,13 +130,13 @@ class ApkpureScraper:
         soup = None
         for i in range(0,self.max_retry):
             try:
-                # response = self.wd.get(url,proxies=self.proxy,timeout=3)
-                # print(response.status_code)
-                # if response.status_code == 200:
-                #     soup = BeautifulSoup(response.text)
-                #     break
-                self.driver.get(url)
-                soup = BeautifulSoup(self.driver.page_source)
+                response = self.wd.get(url,proxies=self.proxy,timeout=3)
+                print(response.status_code)
+                if response.status_code == 200:
+                    soup = BeautifulSoup(response.text)
+                    break
+                # self.driver.get(url)
+                # soup = BeautifulSoup(self.driver.page_source)
                 break
             except:
                 pass
