@@ -8,7 +8,7 @@ class ApkpureScraper:
         
         self.wd = cloudscraper.create_scraper()
         
-        self.max_retry = 3
+        self.max_retry = 10
         
         self.base_url = "https://apkpure.com"
         
@@ -125,7 +125,7 @@ class ApkpureScraper:
         soup = None
         for i in range(0,self.max_retry):
             
-            response = self.wd.get(url,proxies=self.proxy)
+            response = self.wd.get(url,proxies=self.proxy,timeout=3)
             print(response.status_code)
             if response.status_code == 200:
                 soup = BeautifulSoup(response.text)
@@ -140,7 +140,7 @@ class ApkpureScraper:
         file_bytes = None
         
         for i in range(0,self.max_retry):
-            response = self.wd.get(download_link,proxies=self.proxy)
+            response = self.wd.get(download_link,proxies=self.proxy,timeout=10)
             if response.status_code == 200:
                 file_bytes = response.content
                 break
