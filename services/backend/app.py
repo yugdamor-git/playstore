@@ -110,6 +110,17 @@ def get_application_details():
         "data":app_details
     }),200
 
+@app.route('/media/<folderName>/<fileName>')
+def download_file(folderName,fileName):
+    apk_data = list(db.files.find({"_id":fileName}))[0]
+    
+    download_name = apk_data["filename"] + ".apk"
+    
+    file_name = f'{fileName}.apk'
+    
+    return send_from_directory(f'/downloads/{folderName}',file_name, as_attachment=True,download_name=download_name)
+
+
 
 if __name__ == '__main__':
     app.run(debug=True)
