@@ -35,7 +35,7 @@ class ApkDownloader:
         
         if response.status_code == 200:
             with open(file_path,"wb") as f:
-                f.write(response.content())
+                f.write(response.content)
             status = True
         else:
             status = False
