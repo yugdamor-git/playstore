@@ -8,7 +8,10 @@ driver.start()
 
 with driver.page.expect_download() as download_info:
     driver.page.goto(url)
+    
 file = download_info.value
+
+file.save_as("test.apk")
 
 print(file.url)
 
