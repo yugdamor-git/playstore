@@ -66,7 +66,7 @@ class ApkpureScraper:
 
         download_btn = soup.find("div",{"id":"down_btns"})
         
-        download_page_url = download_btn.find("a").get("href")
+        download_page_url = self.base_url +  download_btn.find("a",{"class":" da no-right-radius"}).get("href")
         
         apk_version = download_btn.get("data-dt-version")
         
