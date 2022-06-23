@@ -8,4 +8,4 @@ RUN pip install -r requirements.txt
 
 COPY . .
 
-CMD [ "python","downloader.py" ]
+CMD [ "python","-u","downloader.py" ]
