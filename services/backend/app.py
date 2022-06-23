@@ -43,6 +43,16 @@ def add_application():
         }
     })
 
+@app.route('/search-applications',methods=["GET"])
+def search_applications():
+    keyword = request.args.get("keyword")
+    
+    data = db.search_applications(keyword)
+    
+    return jsonify({
+        "status":True,
+        "message":data
+    })
 
 @app.route('/delete-application',methods=["GET"])
 def delete_application():

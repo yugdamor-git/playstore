@@ -34,6 +34,19 @@ class Database:
         
         return apps
     
+    def search_applications(self,keyword):
+        
+        apps = list(self.application.find(
+            {
+                "title":{
+                    "$regex":keyword,
+                    '$options' : 'i'
+                }
+            }
+        ))
+        
+        return apps
+    
     def add_application(self,data):
         
         package_name = data["package_name"]
