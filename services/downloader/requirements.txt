@@ -6,3 +6,4 @@ flask-cors
 python-dateutil
 gunicorn
 cloudscraper
+undetected-chromedriver

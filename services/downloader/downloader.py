@@ -3,11 +3,14 @@ from apkpure_scraper import ApkpureScraper
 from database import Database
 from helper import generate_file_id
 
+
 class Downloader:
     def __init__(self) -> None:
         self.scraper = ApkpureScraper()
         self.db = Database()
         self.downloads = Path("/downloads")
+        
+        
 
     def save_file(self,package_id,file_id,data_bytes):
         
