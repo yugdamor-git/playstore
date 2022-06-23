@@ -1,7 +1,3 @@
-
-from gevent import monkey
-monkey.patch_all()
-
 from database import Database
 from playwright_driver import PlaywrightDriver
 from helper import create_unique_apk_id,find_value_by_text, string_to_datetime,get_apk_unique_id_from_url,extract_meta_data_from_url
