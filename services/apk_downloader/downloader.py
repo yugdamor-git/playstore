@@ -42,7 +42,7 @@ class ApkDownloader:
             
             
         except Exception as e:
-            pass
+            print(str(e))
         
         return status
     
