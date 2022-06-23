@@ -34,6 +34,8 @@ class ApkDownloader:
     
     def handle_download(self,route):
         url = route.request.url
+        print(url)
+        return route.continue_()
         if "download.apkpure.com" in str(url) or "https://m.apkpure.com/" in str(url) or "https://apkpure.com/" in str(url):
             return route.continue_()
         
