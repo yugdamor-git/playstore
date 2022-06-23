@@ -140,7 +140,7 @@ class ApkpureScraper:
         file_bytes = None
         
         for i in range(0,self.max_retry):
-            response = self.wd.get(download_link,proxies=self.proxy)
+            response = self.wd.get(download_link)
             if response.status_code == 200:
                 file_bytes = response.content
                 break
