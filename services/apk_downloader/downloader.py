@@ -30,19 +30,19 @@ class ApkDownloader:
             
         file_path = folder_path.joinpath(filename)
         status = False
-        try:
-            response = self.scraper.get(url)
+        # try:
+        response = self.scraper.get(url)
+        
+        if response.status_code == 200:
+            with open(file_path,"wb") as f:
+                f.write(response.content())
+            status = True
+        else:
+            status = False
             
-            if response.status_code == 200:
-                with open(file_path,"wb") as f:
-                    f.write(response.content)
-                status = True
-            else:
-                status = False
             
-            
-        except Exception as e:
-            print(str(e))
+        # except Exception as e:
+        #     print(str(e))
         
         return status
     
