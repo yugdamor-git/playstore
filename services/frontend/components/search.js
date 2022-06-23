@@ -18,11 +18,11 @@ const Search = () => {
 
    async function fetchSuggestions(keyword)
     {
-        let url = `${backend_base_url}/suggest?q=${keyword}`
+        let url = `${backend_base_url}/get-suggestion?q=${keyword}`
         const response = await fetch(url);
         const json_data = await response.json()
         console.log(json_data)
-        return json_data
+        return json_data["data"]
     }
 
     async function handleSuggestions(input_text)
@@ -38,13 +38,13 @@ const Search = () => {
 
     async function add_app(item)
     {
-        let url = `${backend_base_url}/add-app`
+        let url = `${backend_base_url}/add-application`
         const response = await fetch(url,{
             method:'POST',
             headers: {
                         'Content-Type': 'application/json'
                     },
-            body:JSON.stringify({"data":item,"package_name":item.package_name})
+            body:JSON.stringify({"data":item})
         });
         const json_data = await response.json()
         
