@@ -60,6 +60,7 @@ class Downloader:
                 data["status"] = "active"
                 data["filename"] = filename
                 data["download_url"] = download_url
+                data["package_id"] = application["_id"]
                 
                 self.db.add_file(data)
             else:
