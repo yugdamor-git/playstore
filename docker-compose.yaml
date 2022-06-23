@@ -49,6 +49,14 @@ services:
     restart: always
 
     env_file: .env
+
+  
+  apk-downloader-url-extractor:
+    build: ./services/download_url_extractor/
+
+    restart: always
+
+    env_file: .env
   
   version-scraper:
     build: ./services/version_scraper/
