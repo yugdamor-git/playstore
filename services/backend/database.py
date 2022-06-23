@@ -118,11 +118,12 @@ class Database:
     def _get_application_by_package_id(self,package_id):
         apps = list(self.application.find({"_id":package_id}))
         return apps
+    
     def get_application_details(self,package_id):
         
         app = self._get_application_by_package_id(package_id)
         
-        if len(app) > 0:
+        if len(app) == 0:
             return False,None
         
         application_details = app[0]
