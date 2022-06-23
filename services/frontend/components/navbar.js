@@ -1,18 +1,29 @@
-import { AppBar, Box, IconButton, Toolbar, Typography } from '@mui/material'
+import { AppBar, Box, Button, IconButton, Toolbar, Typography } from '@mui/material'
 import React from 'react'
 import AndroidIcon from '@mui/icons-material/Android';
 
+import {useRouter} from 'next/router'
+import { Logout } from '@mui/icons-material';
+
 const Navbar = () => {
+
+  const router = useRouter()
   return (
-    <Box marginBottom={3}>
+    <Box sx={{ flexGrow: 1 }} marginBottom={3}>
         <AppBar elevation={1} position='static' color='primary'>
             <Toolbar>
-                <IconButton>
+                <IconButton onClick={()=>router.push("/")}>
                     <AndroidIcon color='white'/>
                 </IconButton>
-                <Typography>
+                <Typography sx={{ flexGrow: 1 }}>
                     App Manager
                 </Typography>
+                <Box>
+                    <Button startIcon={<Logout/>} color='white'>
+                        Logout
+                    </Button>
+                </Box>
+
             </Toolbar>
         </AppBar>
     </Box>

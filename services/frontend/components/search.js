@@ -1,61 +1,75 @@
 import { Add } from '@mui/icons-material'
-import { Avatar, Box, Divider, IconButton, Link, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Stack, TextField } from '@mui/material'
+import { Avatar, Box, Divider, IconButton, Link, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Snackbar, Stack, TextField } from '@mui/material'
 import React, { useState } from 'react'
+import { backend_base_url } from '../src/config'
 
 const Search = () => {
 
-    const suggestions_test = [
-        {
-            package_name:"com.whatsapp",
-            total_install:"3.5M",
-            icon_url:'https://image.winudf.com/v2/image1/Y29tLndoYXRzYXBwX2ljb25fMTU1OTg1MDA2NF8wNjI/icon.png?w=100&fakeurl=1&type=.webp',
-            title:'WhatsApp Messenger',
-            package_url:'https://m.apkpure.com/whatsapp-messenger/com.whatsapp',
-            tags:[
-                "Tools",
-                "Social",
-                "Chat"
-            ]
-        },
-        {
-            package_name:"com.instagram.android",
-            total_install:"3.5M",
-            icon_url:'https://image.winudf.com/v2/image1/Y29tLmluc3RhZ3JhbS5hbmRyb2lkX2ljb25fMTYwNTU3MDIwNF8wNzg/icon.png?w=100&fakeurl=1&type=.webp',
-            title:'Instagram',
-            package_url:'https://m.apkpure.com/instagram-android/com.instagram.android',
-            tags:[
-                "Tools",
-                "Social",
-                "Chat"
-            ]
-        }
-
-    ]
-
+   
     const [suggestions,setSuggestions] = useState([])
 
-    function fetchSuggestions(keyword)
+    const [snackbar,setSnackbar] = useState(
+        {
+            show:false,
+            message:""
+        }
+    )
+
+
+   async function fetchSuggestions(keyword)
     {
-        return suggestions_test
+        let url = `${backend_base_url}/suggest?q=${keyword}`
+        const response = await fetch(url);
+        const json_data = await response.json()
+        console.log(json_data)
+        return json_data
     }
 
-    function handleSuggestions(input_text)
+    async function handleSuggestions(input_text)
     {
-        if(input_text.length > 0)
+        if(input_text.length >= 3)
         {
-            setSuggestions(fetchSuggestions(input_text))
+            setSuggestions(await fetchSuggestions(input_text))
         }
         else{
             setSuggestions([])
         }
     }
 
+    async function add_app(item)
+    {
+        let url = `${backend_base_url}/add-app`
+        const response = await fetch(url,{
+            method:'POST',
+            headers: {
+                        'Content-Type': 'application/json'
+                    },
+            body:JSON.stringify({"data":item,"package_name":item.package_name})
+        });
+        const json_data = await response.json()
+        
+        console.log(json_data)
+        
+        setSnackbar({
+            show:true,
+            message:json_data.message
+        })
+
+        return json_data
+    }
+
 
 
   return (
     <Stack>
+        <Snackbar
+        open={snackbar.show}
+        autoHideDuration={3000}
+        message={snackbar.message}
+        onClick={()=> setSnackbar({show:false,message:""})}
+        />
         <Box>
-            <TextField onChange={(e) => handleSuggestions(e.target.value)}  fullWidth label='Search app on apkpure' id='search'/>
+            <TextField onChange={async(e) => handleSuggestions(e.target.value)}  fullWidth label='Search app on apkpure' id='search'/>
         </Box>
         <List>
             {
@@ -64,7 +78,8 @@ const Search = () => {
                     <ListItem
                     disablePadding
                     secondaryAction={
-                        <IconButton 
+                        <IconButton
+                        onClick={()=> add_app(item)}
                         sx={{
                             marginRight:1
                         }}

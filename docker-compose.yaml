@@ -1,0 +1,60 @@
+
+version: '3'
+
+services:
+  mongodb:
+    image: mongo:latest
+    
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD}
+
+    ports:
+      - ${MONGO_PORT}:27017
+    volumes:
+      - ./services/mongodb/database:/data/db
+    
+    restart: always
+
+  
+  backend:
+    build: ./services/backend/
+
+    volumes:
+      - ./services/downloads:/downloads
+    ports: 
+          - 5555:5000
+    restart: always
+
+    env_file: .env
+
+  frontend:
+    container_name: frontend
+    build: ./services/frontend
+
+    volumes:
+      - ./services/frontend/node_modules:/usr/src/app/node_modules
+
+    restart: always
+    
+    ports:
+        - "5556:3000"
+
+    env_file: .env
+  
+  apk-downloader:
+    build: ./services/apk_downloader/
+
+    volumes:
+      - ./services/downloads:/downloads
+
+    restart: always
+
+    env_file: .env
+  
+  version-scraper:
+    build: ./services/version_scraper/
+      
+    restart: always
+
+    env_file: .env

@@ -1,82 +1,73 @@
-import { Avatar, Button, colors, Divider, Icon, IconButton, Link, List, ListItem, ListItemText, Paper, Stack, TextField, Typography } from '@mui/material'
+import { Avatar, Button, colors, Divider, Icon, IconButton, Link, List, ListItem, ListItemText, Paper, Snackbar, Stack, TextField, Typography } from '@mui/material'
 import { Box } from '@mui/system'
-import React from 'react'
+import React, { useState } from 'react'
 import DownloadIcon from '@mui/icons-material/Download';
 import DeleteIcon from '@mui/icons-material/Delete';
+import { backend_base_url } from '../../../src/config';
 
-const AppDetails = () => {
+const AppDetails = ({data}) => {
+    
+    const [snackbar,setSnackbar] = useState(
+        {
+            show:false,
+            message:""
+        }
+    )
 
+    const [descriptionText,setDescriptionText] = useState(data.description)
 
-    const data =  {
-        package_name:"com.instagram.android",
-        total_install:"3.5M",
-        icon_url:'https://image.winudf.com/v2/image1/Y29tLmluc3RhZ3JhbS5hbmRyb2lkX2ljb25fMTYwNTU3MDIwNF8wNzg/icon.png?w=100&fakeurl=1&type=.webp',
-        title:'Instagram',
-        package_url:'https://m.apkpure.com/instagram-android/com.instagram.android',
-        tags:[
-            "Tools",
-            "Social",
-            "Chat"
-        ],
-        description:"Welcome to the world of easylearning sewing and complete delight. All you need is to relax and enjoy sewing different wares. With each level, your logic and skills are pumped more and more. You have absolute freedom of action, do what you want and earn money! Upgrade your skill and become a real professional!"
+    const versions = data.versions
+
+    async function delete_app(id)
+    {
+        const url = `${backend_base_url}/delete-app?package_id=${id}`
+
+        const response = await fetch(url)
+
+        const json_data = await response.json()
+
+        setSnackbar({
+            show:true,
+            message:json_data.message
+        })
+
+    }
+
+    async function update_description(latest_text,id)
+    {
+        const item = {
+            "description":latest_text
+        }
+        let url = `${backend_base_url}/update-app`
+        const response = await fetch(url,{
+            method:'POST',
+            headers: {
+                        'Content-Type': 'application/json'
+                    },
+            body:JSON.stringify({"data":item,"id":id})
+        });
+        const json_data = await response.json()
+        
+        console.log(json_data)
+        
+        setSnackbar({
+            show:true,
+            message:json_data.message
+        })
+
+        return json_data
     }
 
 
-    const versions = [
 
-        {
-            title:"Instagram v1.1.1",
-            version:'v1.1.1',
-            size:'58Mb',
-            version_code:'8883883',
-            download_url:'https://',
-            updated_at:'28-06-2022',
-            type:'Apk',
-            variant:false
-        },
-        {
-            title:"Instagram v1.1.1",
-            version:'v1.1.1',
-            size:'58Mb',
-            version_code:'8883883',
-            download_url:'https://',
-            updated_at:'28-06-2022',
-            type:'Apk',
-            variant:false
-        },
-        {
-            title:"Instagram v1.1.1",
-            version:'v1.1.1',
-            size:'58Mb',
-            version_code:'8883883',
-            download_url:'https://',
-            updated_at:'28-06-2022',
-            type:'Apk',
-            variant:false
-        },
-        {
-            title:"Instagram v1.1.1",
-            version:'v1.1.1',
-            size:'58Mb',
-            version_code:'8883883',
-            download_url:'https://',
-            updated_at:'28-06-2022',
-            type:'Apk',
-            variant:false
-        },
-        {
-            title:"Instagram v1.1.1",
-            version:'v1.1.1',
-            size:'58Mb',
-            version_code:'8883883',
-            download_url:'https://',
-            updated_at:'28-06-2022',
-            type:'Apk',
-            variant:false
-        }
-    ]
   return (
     <Box>
+        <Snackbar
+        open={snackbar.show}
+        autoHideDuration={3000}
+        message={snackbar.message}
+        onClick={()=> setSnackbar({show:false,message:""})}
+        />
         <Stack direction={'column'}>
             <Stack alignItems='center'  direction={'row'}>
                 <Avatar variant='rounded' sx={{ width: 85, height: 85 }} src={data.icon_url}/>
@@ -92,11 +83,9 @@ const AppDetails = () => {
             </Stack>
             
             <Stack alignItems='center' spacing={2} marginY={2}>
-                <Button fullWidth variant='contained' color={'error'} startIcon={<DeleteIcon/>}>Delete App</Button>
-                <Button fullWidth variant='contained' startIcon={<DownloadIcon/>}>Download Latest Apk Version</Button>
+                <Button onClick={()=>delete_app(data._id)} fullWidth variant='contained' color={'error'} startIcon={<DeleteIcon/>}>Delete App</Button>
+                {/* <Button fullWidth variant='contained' startIcon={<DownloadIcon/>}>Download Latest Apk Version</Button> */}
             </Stack>
-
-            
 
             <Box>
             <Stack>
@@ -104,11 +93,12 @@ const AppDetails = () => {
                     <TextField
                     multiline
                     maxRows={10}
-                    defaultValue={data.description}
+                    onChange={(e)=>setDescriptionText(e.target.value)}
+                    defaultValue={descriptionText}
                     >
                     </TextField>
                     <Box marginY={2}>
-                    <Button size={"small"} variant='outlined'>Update App Description</Button>
+                    <Button size={"small"} onClick={()=>update_description(descriptionText,data._id)} variant='outlined'>Update App Description</Button>
                     </Box>
                 </Stack>
             </Box>
@@ -124,12 +114,12 @@ const AppDetails = () => {
                                 <Paper elevation={1}>
                                     <ListItem
                                     secondaryAction={
-                                        <IconButton>
+                                        <IconButton href={`${backend_base_url}/media/${item.package_id}/${item.apk_unique_id}`} disabled={item.status == "active" ? false : true}>
                                             <DownloadIcon/>
                                         </IconButton>
                                     }
                                     key={index}>
-                                        <ListItemText primary={item.title} secondary={`${item.updated_at} - ${item.size} - ${item.type}`}/>
+                                        <ListItemText primary={`${item.version} - ${item.status}`} secondary={`${item.uploaded_on} - ${item.size} - ${item.type} - ${item.arch}`}/>
 
                                     </ListItem>
 
@@ -146,3 +136,19 @@ const AppDetails = () => {
 }
 
 export default AppDetails
+
+
+
+export async function getServerSideProps(context) {
+    
+    const id = context.params.app_id
+
+    const response = await fetch(`${backend_base_url}/get-app-details?id=${id}`)
+    const data = await response.json()
+    
+    return {
+      props: {
+        data:data["data"]
+      }, // will be passed to the page component as props
+    }
+  }
