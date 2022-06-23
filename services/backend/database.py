@@ -34,7 +34,7 @@ class Database:
         
         return apps
     
-    def search_applications(self,keyword):
+    def search_applications(self,keyword,limit):
         
         apps = list(self.application.find(
             {
@@ -43,7 +43,7 @@ class Database:
                     '$options' : 'i'
                 }
             }
-        ))
+        ).limit(limit))
         
         return apps
     

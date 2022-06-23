@@ -45,9 +45,14 @@ def add_application():
 
 @app.route('/search-applications',methods=["GET"])
 def search_applications():
+    default_limit = 20
+    limit = request.args.get("limit")
+    if limit != None:
+        default_limit = int(limit)
+        
     keyword = request.args.get("keyword")
     
-    data = db.search_applications(keyword)
+    data = db.search_applications(keyword,default_limit)
     
     return jsonify({
         "status":True,

@@ -14,7 +14,7 @@ const MyApps = ({data}) => {
         if (keyword.length >= 3)
         {
             backend_base_url
-            const url = `${backend_base_url}/search-apps?limit=10&q=${keyword}`
+            const url = `${backend_base_url}/search-applications?limit=20&keyword=${keyword}`
 
             const response = await fetch(url)
     
