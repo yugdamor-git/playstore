@@ -120,18 +120,14 @@ class Database:
         return apps
     def get_application_details(self,package_id):
         
-        app = self._get_application_by_package_id()
+        app = self._get_application_by_package_id(package_id)
         
         if len(app) > 0:
             return False,None
         
         application_details = app[0]
         
-        application_version = list(self.version.find({"package_id":package_id}).sort("updated_at",pymongo.DESCENDING))
-        
         application_files = list(self.files.find({"package_id":package_id}).sort("published_on_timestamp",pymongo.DESCENDING))
-        
-        application_details["versions"] = application_version
         
         application_details["files"] = application_files
         

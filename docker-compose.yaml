@@ -44,8 +44,6 @@ services:
 
     volumes:
       - ./services/downloads:/downloads
-      - ./services/videos:/usr/src/app/videos
-
     restart: always
 
     env_file: .env
