@@ -2,7 +2,7 @@ import * as React from 'react';
 import Box from '@mui/material/Box';
 import Search from '../components/search';
 import MyApps from '../components/recent_apps';
-import { backend_base_url } from '../src/config';
+import { backend_base_url, backend__internal_base_url } from '../src/config';
 
 export default function Index({recent_apps}) {
   return (
@@ -17,7 +17,7 @@ export default function Index({recent_apps}) {
 export async function getServerSideProps(context) {
   
   
-  const response = await fetch(`${backend_base_url}/get-recent-apps?limit=15`)
+  const response = await fetch(`${backend__internal_base_url}/get-recent-apps?limit=15`)
   const data = await response.json()
   
   return {
