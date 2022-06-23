@@ -18,7 +18,7 @@ class PlaywrightDriver:
         
         self.browser = self.playwright.chromium.launch(headless=self.headless)
         
-        self.page = self.browser.new_page(user_agent="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.51 Safari/537.36")
+        self.page = self.browser.new_page(user_agent="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.51 Safari/537.36",record_video_dir="videos/")
     
     def stop(self):
         
