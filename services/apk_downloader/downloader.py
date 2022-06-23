@@ -65,6 +65,7 @@ class ApkDownloader:
     def init_download(self,url,file_path):
         self.current_id = id
         self.driver.start()
+        # self.driver.page.goto("https://m.apkpure.com")
         status = False
         try:
             # self.driver.page.route("**/*",self.handle_download)
