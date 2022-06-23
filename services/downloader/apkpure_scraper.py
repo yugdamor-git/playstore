@@ -101,7 +101,7 @@ class ApkpureScraper:
         return True,data
     
     def download_apk(self,url):
-        
+        error_message = "no error"
         soup = None
         for i in range(0,self.max_retry):
             
@@ -111,7 +111,8 @@ class ApkpureScraper:
                 break
                 
         if soup == None:
-            return False,None,None
+            error_message = "soup is none"
+            return False,None,None,error_message
 
         download_link = soup.find("a",{"id":"download_link"}).get("href")
         
@@ -124,9 +125,10 @@ class ApkpureScraper:
                 break
         
         if file_bytes == None:
-            return False,None,None
+            error_message = "file bytes are none"
+            return False,None,None,error_message
         
-        return True,file_bytes,download_link
+        return True,file_bytes,download_link,error_message
 
 
 

@@ -49,8 +49,9 @@ class Downloader:
             
             filename,file_id = generate_file_id(package_name,version,version_code,published_on)
             
-            status,file_bytes,download_url = self.scraper.download_apk(download_page_url)
-            
+            status,file_bytes,download_url,error_message = self.scraper.download_apk(download_page_url)
+            print(download_url)
+            print(error_message)
             if status == True:
                 self.save_file(package_id,file_id,file_bytes)
                 self.db.update_application(package_id,data)
