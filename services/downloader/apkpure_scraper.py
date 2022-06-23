@@ -16,7 +16,22 @@ class ApkpureScraper:
             "http":"http://108.59.14.208:13081",
             "https":"http://108.59.14.208:13081"
         }
-    
+
+        self.headers = {
+        'authority': 'apkpure.com',
+        'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
+        'accept-language': 'en-US,en;q=0.9,ca;q=0.8,cs;q=0.7,fr;q=0.6,hi;q=0.5',
+        'cache-control': 'max-age=0',
+        'sec-ch-ua': '" Not A;Brand";v="99", "Chromium";v="102", "Google Chrome";v="102"',
+        'sec-ch-ua-mobile': '?0',
+        'sec-ch-ua-platform': '"Windows"',
+        'sec-fetch-dest': 'document',
+        'sec-fetch-mode': 'navigate',
+        'sec-fetch-site': 'none',
+        'sec-fetch-user': '?1',
+        'upgrade-insecure-requests': '1',
+        'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/102.0.0.0 Safari/537.36'
+        }
 
     def get_suggestions(self,keyword):
         url = f'https://m.apkpure.com/api/v1/search_suggestion_new?key={keyword}'
@@ -110,7 +125,7 @@ class ApkpureScraper:
         soup = None
         for i in range(0,self.max_retry):
             
-            response = self.wd.get(url,proxies=self.proxy)
+            response = self.wd.get(url,proxies=self.proxy,headers=self.headers)
             print(response.status_code)
             if response.status_code == 200:
                 soup = BeautifulSoup(response.text)
@@ -125,7 +140,7 @@ class ApkpureScraper:
         file_bytes = None
         
         for i in range(0,self.max_retry):
-            response = self.wd.get(download_link)
+            response = self.wd.get(download_link,proxies=self.proxy)
             if response.status_code == 200:
                 file_bytes = response.content
                 break
