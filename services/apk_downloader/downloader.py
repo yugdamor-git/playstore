@@ -22,7 +22,7 @@ class ApkDownloader:
         if not self.downloads.exists():
             self.downloads.mkdir()
         
-    def download(self,url,file_name,id):
+    def download(self,url,file_name,id,apk_id):
         
         folder_path = self.downloads.joinpath(id)
         
@@ -30,7 +30,7 @@ class ApkDownloader:
             folder_path.mkdir()
             
         file_path = folder_path.joinpath(file_name)
-        if self.init_download(url,file_path) == True:
+        if self.init_download(url,apk_id) == True:
             print(f'download_successful')
         else:
             print(f'download_failed')
