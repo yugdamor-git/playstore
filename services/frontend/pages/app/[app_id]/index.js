@@ -114,12 +114,12 @@ const AppDetails = ({data}) => {
                                 <Paper elevation={1}>
                                     <ListItem
                                     secondaryAction={
-                                        <IconButton href={`${backend_base_url}/media/${item.package_id}/${item.apk_unique_id}`} disabled={item.status == "active" ? false : true}>
+                                        <IconButton href={`${backend_base_url}/media/${item.package_id}/${item._id}`} disabled={item.status == "active" ? false : true}>
                                             <DownloadIcon/>
                                         </IconButton>
                                     }
                                     key={index}>
-                                        <ListItemText primary={`${item.version} - ${item.status}`} secondary={`${item.uploaded_on} - ${item.size} - ${item.type} - ${item.arch}`}/>
+                                        <ListItemText primary={`${item.version} - ${item.status}`} secondary={`${item.published_on_text} - ${item.size_text} - ${item.type} - ${item.version_code}`}/>
 
                                     </ListItem>
 
