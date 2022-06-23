@@ -39,8 +39,8 @@ services:
 
     env_file: .env
   
-  apk-downloader:
-    build: ./services/apk_downloader/
+  downloader:
+    build: ./services/downloader/
 
     volumes:
       - ./services/downloads:/downloads
@@ -49,21 +49,3 @@ services:
     restart: always
 
     env_file: .env
-
-  
-  apk-downloader-url-extractor:
-    build: ./services/download_url_extractor/
-
-    restart: always
-
-    env_file: .env
-  
-  version-scraper:
-    build: ./services/version_scraper/
-      
-    restart: always
-
-    env_file: .env
-  
-
-  

@@ -66,6 +66,8 @@ class VersionScraper:
             
             data.append(tmp)
             
+            break
+            
         return data
     
     def extract_version_code_from_url(self,url):
@@ -164,7 +166,7 @@ if __name__ == "__main__":
         url = app["package_url"]
         package_name = app["package_name"]
         
-        version_url = url + "/versions"
+        version_url = url 
         
         data = vs.scrape(version_url)
         

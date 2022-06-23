@@ -1,8 +1,9 @@
 flask
 bs4
+playwright
 pymongo
 jsonschema
 flask-cors
 python-dateutil
 gunicorn
-cloudscraper
+gevent
