@@ -6,7 +6,11 @@ from helper import string_to_datetime
 class ApkpureScraper:
     def __init__(self) -> None:
         
-        self.wd = cloudscraper.create_scraper()
+        self.wd = cloudscraper.create_scraper(browser={
+        'browser': 'chrome',
+        'platform': 'android',
+        'desktop': False
+        })
         
         self.max_retry = 20
         
