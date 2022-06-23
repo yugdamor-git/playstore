@@ -141,13 +141,14 @@ class ApkpureScraper:
         
         for i in range(0,self.max_retry):
             response = self.wd.get(download_link)
+            print(response.status_code)
             if response.status_code == 200:
                 file_bytes = response.content
                 break
         
         if file_bytes == None:
             error_message = "file bytes are none"
-            return False,None,None,error_message
+            return False,None,download_link,error_message
         
         return True,file_bytes,download_link,error_message
 
