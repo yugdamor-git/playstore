@@ -13,6 +13,8 @@ class ApkDownloader:
 
         self.cwd = Path("/")
         
+        self.db = Database()
+        
         self.downloads = self.cwd.joinpath("downloads")
         
         if not self.downloads.exists():
@@ -42,7 +44,7 @@ class ApkDownloader:
         else:
             return route.abort()
     
-    def init_download(self,url,file_path):
+    def init_download(self,url,id):
         
         self.driver.start()
         status = False
@@ -54,7 +56,12 @@ class ApkDownloader:
             
             file = download_info.value
             
-            file.save_as(file_path)
+            download_url = file.url
+            
+            self.db.apk.update_one({"_id":id},{"$set":{
+                "status":"download",
+                "apk_download_url":download_url
+            }})
             
             status = True
         except Exception as e:
