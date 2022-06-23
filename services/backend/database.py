@@ -33,7 +33,7 @@ class Database:
             {"package_id":package_id}
         )
         
-        self.version.delete_many(
+        self.apk.delete_many(
             {"package_id":package_id}
         )
         
