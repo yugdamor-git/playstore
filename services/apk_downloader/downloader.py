@@ -51,7 +51,7 @@ class ApkDownloader:
         url = response.url
         
         if "https://download.apkpure.com/" in url:
-            self.db.apk.update_one({"_id":self.id},{"$set":{
+            self.db.apk.update_one({"_id":self.current_id},{"$set":{
                 "status":"download",
                 "apk_download_url":url
             }})
