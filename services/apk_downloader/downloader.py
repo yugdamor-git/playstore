@@ -54,44 +54,44 @@ if __name__ == "__main__":
     
     for apk in list(db.apk.find({"status":"download"})):
         print(apk)
-        try:
-            ext = None
-            if apk["type"] == "APK" or apk["type"] == "apk":
-                ext = "apk"
-            else:
-                ext = "zip"
-            
-            filename = f'{apk["apk_unique_id"]}.{ext}'
-            
-            folder_name = apk["package_id"]
-            
-            download_url = apk["apk_download_url"]
-            
-            status = ad.download(download_url,filename,folder_name)
-            
-            update_item = {
-                    
-                    "local_file_name":filename,
-                }
-            
-            if status == True:
-                update_item["status"] = "active"
-            
-            db.update_apk(
-                apk["_id"],
-                update_item
-            )
-        except Exception as e:
-            
-            error_count = apk["error_count"] + 1
+        # try:
+        ext = None
+        if apk["type"] == "APK" or apk["type"] == "apk":
+            ext = "apk"
+        else:
+            ext = "zip"
+        
+        filename = f'{apk["apk_unique_id"]}.{ext}'
+        
+        folder_name = apk["package_id"]
+        
+        download_url = apk["apk_download_url"]
+        
+        status = ad.download(download_url,filename,folder_name)
+        
+        update_item = {
                 
-            db.update_apk(
-                apk["_id"],
-                {
-                    "error_count":error_count,
-                    "error_message":str(e)
-                }
-            )
+                "local_file_name":filename,
+            }
+        
+        if status == True:
+            update_item["status"] = "active"
+        
+        db.update_apk(
+            apk["_id"],
+            update_item
+        )
+        # except Exception as e:
+            
+        #     error_count = apk["error_count"] + 1
+                
+        #     db.update_apk(
+        #         apk["_id"],
+        #         {
+        #             "error_count":error_count,
+        #             "error_message":str(e)
+        #         }
+        #     )
     
     # file_name = "test.apk"
     # id = "whatsapp"
