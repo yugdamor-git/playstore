@@ -17,8 +17,8 @@ class ApkpureScraper:
         self.base_url = "https://apkpure.com"
         
         self.proxy = {
-            "http":"http://tor-proxy:8118",
-            "https":"http://tor-proxy:8118"
+            "http":"http://108.59.14.203:13081",
+            "https":"http://108.59.14.203:13081"
         }
 
         self.headers = {
@@ -144,7 +144,7 @@ class ApkpureScraper:
         file_bytes = None
         
         for i in range(0,self.max_retry):
-            response = self.wd.get(download_link)
+            response = self.wd.get(download_link,proxies=self.proxy)
             print(response.status_code)
             if response.status_code == 200:
                 file_bytes = response.content
