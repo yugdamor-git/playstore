@@ -4,7 +4,7 @@ monkey.patch_all()
 
 from helper import clean_package_name
 
-from flask import Flask, jsonify, request,send_from_directory
+from flask import Flask, jsonify, redirect, request,send_from_directory
 from suggestion_scraper import SuggestionScraper
 import os
 from database import Database
@@ -37,6 +37,11 @@ db = Database()
 user_agent = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.51 Safari/537.36"
 
 
+
+@app.route('/test-redirect')
+def test_redirect():
+    url= "https://download.apkpure.com/b/APK/Y29tLmluc3RhZ3JhbS5hbmRyb2lkXzM2MzUwNDk4NF82OGFmYzkxMQ?_fn=SW5zdGFncmFtX3YyMzUuMC4wLjIxLjEwN19hcGtwdXJlLmNvbS5hcGs&as=b9e2c9351cb7977aadc5bd16fbae893962b42052&ai=298936170&at=1655971802&_sa=ai%2Cat&k=594dc0db6cbca2a9dd5aa36653de967a62b6c2da&_p=Y29tLmluc3RhZ3JhbS5hbmRyb2lk&c=1%7CSOCIAL%7CZGV2PUluc3RhZ3JhbSZ0PWFwayZzPTU5NDQ2MjY2JnZuPTIzNS4wLjAuMjEuMTA3JnZjPTM2MzUwNDk4NA"
+    return redirect(url,code=302) 
 
 @app.route('/suggest')
 def suggestion():
