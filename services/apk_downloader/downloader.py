@@ -59,7 +59,7 @@ if __name__ == "__main__":
         if apk["type"] == "APK" or apk["type"] == "apk":
             ext = "apk"
         else:
-            ext = "zip"
+            ext = "xapk"
         
         filename = f'{apk["apk_unique_id"]}.{ext}'
         
