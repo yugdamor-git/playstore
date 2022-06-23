@@ -6,7 +6,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import { backend_base_url } from '../../../src/config';
 
 const AppDetails = ({data}) => {
-    
+
     const [snackbar,setSnackbar] = useState(
         {
             show:false,
@@ -16,11 +16,11 @@ const AppDetails = ({data}) => {
 
     const [descriptionText,setDescriptionText] = useState(data.description)
 
-    const versions = data.versions
+    const files = data.files
 
     async function delete_app(id)
     {
-        const url = `${backend_base_url}/delete-app?package_id=${id}`
+        const url = `${backend_base_url}/delete-application?package_id=${id}`
 
         const response = await fetch(url)
 
@@ -38,13 +38,13 @@ const AppDetails = ({data}) => {
         const item = {
             "description":latest_text
         }
-        let url = `${backend_base_url}/update-app`
+        let url = `${backend_base_url}/update-application?package_id=${id}`
         const response = await fetch(url,{
             method:'POST',
             headers: {
                         'Content-Type': 'application/json'
                     },
-            body:JSON.stringify({"data":item,"id":id})
+            body:JSON.stringify({"data":item})
         });
         const json_data = await response.json()
         
@@ -109,7 +109,7 @@ const AppDetails = ({data}) => {
                 </Paper>
                 <List>
                     {
-                        versions.map((item,index)=>(
+                        files.map((item,index)=>(
                             <Box marginY={2}>
                                 <Paper elevation={1}>
                                     <ListItem
@@ -143,7 +143,7 @@ export async function getServerSideProps(context) {
     
     const id = context.params.app_id
 
-    const response = await fetch(`${backend_base_url}/get-app-details?id=${id}`)
+    const response = await fetch(`${backend_base_url}/get-application-details?package_id=${id}`)
     const data = await response.json()
     
     return {
