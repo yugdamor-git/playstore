@@ -3,13 +3,10 @@
 
 from pathlib import Path
 from database import Database
-from playwright_driver import PlaywrightDriver
-
+import cloudscraper
 
 class ApkDownloader:
     def __init__(self) -> None:
-        
-        self.driver = PlaywrightDriver()
 
         self.cwd = Path("/")
         
@@ -21,75 +18,34 @@ class ApkDownloader:
         
         if not self.downloads.exists():
             self.downloads.mkdir()
+            
+        self.scraper = cloudscraper.create_scraper()
         
-    def download(self,url,file_name,id):
-        
+    
+    def download(self,url,filename,foldername):
         folder_path = self.downloads.joinpath(id)
         
         if not folder_path.exists():
             folder_path.mkdir()
             
-        file_path = folder_path.joinpath(file_name)
-        
-        if self.init_download(url,file_path) == True:
-            print(f'download_successful')
-        else:
-            print(f'download_failed')
-        
-    
-    def handle_download(self,route):
-        url = route.request.url
-        print(url)
-        if "https://m.apkpure.com/" in str(url) or "https://apkpure.com/" in str(url):
-            return route.continue_()
-        
-        elif "https://download.apkpure.com/" in url:
-            self.db.apk.update_one({"_id":self.current_id},{"$set":{
-                "status":"download",
-                "apk_download_url":url
-            }})
-            return route.abort()
-        else:
-            return route.abort()
-    
-    def handle_response(self,response):
-        url = response.url
-        
-        if "https://download.apkpure.com/" in url:
-            self.db.apk.update_one({"_id":self.current_id},{"$set":{
-                "status":"download",
-                "apk_download_url":url
-            }})
-            
-    
-    def init_download(self,url,file_path):
-        self.current_id = id
-        self.driver.start()
-        # self.driver.page.goto("https://m.apkpure.com")
+        file_path = folder_path.joinpath(filename)
         status = False
         try:
-            # self.driver.page.route("**/*",self.handle_download)
+            response = self.scraper.get(url)
             
-            # self.driver.page.on("response",self.handle_response)
-            
-            with self.driver.page.expect_download(timeout=30 * 1000) as download_info:
-                self.driver.page.goto(url)
-            
-            file = download_info.value
-            
-            file.save_as(file_path)
+            if response.status_code == 200:
+                with open(file_path,"wb") as f:
+                    f.write(response.content)
+                status = True
+            else:
+                status = False
             
             
-            
-            status = True
         except Exception as e:
-            print(f'error : {str(e)}')
-            
-        self.driver.stop()
+            pass
         
         return status
-
-
+    
 if __name__ == "__main__":
     # testing
     ad = ApkDownloader()
@@ -111,14 +67,19 @@ if __name__ == "__main__":
             
             download_url = apk["apk_download_url"]
             
-            ad.download(download_url,filename,folder_name)
+            status = ad.download(download_url,filename,folder_name)
+            
+            update_item = {
+                    
+                    "local_file_name":filename,
+                }
+            
+            if status == True:
+                update_item["status"] = "active"
             
             db.update_apk(
                 apk["_id"],
-                {
-                    "status":"active",
-                    "local_file_name":filename,
-                }
+                update_item
             )
         except Exception as e:
             

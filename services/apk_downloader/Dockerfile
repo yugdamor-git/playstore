@@ -1,14 +1,8 @@
-FROM mcr.microsoft.com/playwright/python:v1.21.0-focal
+FROM python3
 
 WORKDIR /usr/src/app
 
 COPY ./requirements.txt ./
-
-RUN pip install -r requirements.txt
-
-RUN playwright install
-
-RUN playwright install-deps
 
 COPY . .
 

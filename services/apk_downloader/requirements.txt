@@ -1,7 +1,6 @@
 flask
 bs4
-playwright
+cloudscraper
 pymongo
 jsonschema
 python-dateutil
-gevent
