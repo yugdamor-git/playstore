@@ -43,8 +43,8 @@ class ApkDownloader:
         try:
             self.driver.page.route("**/*",self.handle_download)
             
-            with self.driver.page.expect_download(timeout=10*1000) as download_info:
-                self.driver.page.goto(url,timeout=5 * 1000)
+            with self.driver.page.expect_download() as download_info:
+                self.driver.page.goto(url)
             
             file = download_info.value
             
