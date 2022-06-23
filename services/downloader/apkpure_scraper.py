@@ -128,12 +128,14 @@ class ApkpureScraper:
         error_message = "no error"
         soup = None
         for i in range(0,self.max_retry):
-            
-            response = self.wd.get(url,proxies=self.proxy,timeout=3)
-            print(response.status_code)
-            if response.status_code == 200:
-                soup = BeautifulSoup(response.text)
-                break
+            try:
+                response = self.wd.get(url,proxies=self.proxy,timeout=3)
+                print(response.status_code)
+                if response.status_code == 200:
+                    soup = BeautifulSoup(response.text)
+                    break
+            except:
+                pass
                 
         if soup == None:
             error_message = "soup is none"
@@ -144,11 +146,14 @@ class ApkpureScraper:
         file_bytes = None
         
         for i in range(0,self.max_retry):
-            response = self.wd.get(download_link,proxies=self.proxy)
-            print(response.status_code)
-            if response.status_code == 200:
-                file_bytes = response.content
-                break
+            try:
+                response = self.wd.get(download_link,proxies=self.proxy)
+                print(response.status_code)
+                if response.status_code == 200:
+                    file_bytes = response.content
+                    break
+            except:
+                pass
         
         if file_bytes == None:
             error_message = "file bytes are none"
