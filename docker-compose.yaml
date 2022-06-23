@@ -32,9 +32,6 @@ services:
     container_name: frontend
     build: ./services/frontend
 
-    volumes:
-      - ./services/frontend/node_modules:/usr/src/app/node_modules
-
     restart: always
     
     ports:
