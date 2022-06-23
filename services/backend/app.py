@@ -25,7 +25,7 @@ def get_suggestion():
     return jsonify({
         "data":data,
         "status":status
-    }),200
+    })
 
 # add application in database
 
@@ -41,10 +41,10 @@ def add_application():
         "data":{
             "_id":id
         }
-    }),200
+    })
 
 
-@app.route('/delete-application',method=["GET"])
+@app.route('/delete-application',methods=["GET"])
 def delete_application():
     package_id = request.args.get("package_id")
     
@@ -53,9 +53,9 @@ def delete_application():
     return jsonify({
         "status":status,
         "message":message
-    }),200
+    })
 
-@app.route('/update-application',method=["POST"])
+@app.route('/update-application',methods=["POST"])
 def update_application():
     package_id = request.args.get("package_id")
     
@@ -68,7 +68,7 @@ def update_application():
         "message":"data updated"
     }),200
     
-@app.route('/get-recent-application',method=["GET"])
+@app.route('/get-recent-application',methods=["GET"])
 def get_recent_application():
     default_limit = 20
     
@@ -84,7 +84,7 @@ def get_recent_application():
         "data":recent_application
     }),200
 
-@app.route('/get-application-details',method=["GET"])
+@app.route('/get-application-details',methods=["GET"])
 def get_application_details():
     default_limit = 20
     
