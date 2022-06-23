@@ -29,12 +29,15 @@ class Downloader:
         
         for application in pending_applications:
             package_url = application["package_url"]
+            package_id = application["_id"]
             
-            data = self.scraper.scrape_app_details(package_url)
+            status,data = self.scraper.scrape_app_details(package_url)
+            
+            if status == False:
+                self.db.update_application(package_id,{"error_count":application["error_count"] + 1})
+                continue
             
             data["status"] = "active"
-            
-            package_id = application["_id"]
             
             package_name = application["package_name"]
             version = data["version"]

@@ -101,8 +101,6 @@ def get_recent_application():
 
 @app.route('/get-application-details',methods=["GET"])
 def get_application_details():
-    default_limit = 20
-    
     package_id = request.args.get("package_id")
     
     status,app_details = db.get_application_details(package_id)
