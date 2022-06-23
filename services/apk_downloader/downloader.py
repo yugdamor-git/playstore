@@ -1,6 +1,11 @@
+from gevent import monkey
+monkey.patch_all()
+
+
 from pathlib import Path
 from database import Database
 from playwright_driver import PlaywrightDriver
+
 
 class ApkDownloader:
     def __init__(self) -> None:

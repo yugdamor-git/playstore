@@ -4,3 +4,4 @@ playwright
 pymongo
 jsonschema
 python-dateutil
+gevent

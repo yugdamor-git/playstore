@@ -10,7 +10,7 @@ class PlaywrightDriver:
         
         self.page = None
         
-        self.headless = True
+        self.headless = False
     
     def start(self):
         
