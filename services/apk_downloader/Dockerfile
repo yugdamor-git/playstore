@@ -27,4 +27,4 @@ RUN playwright install-deps
 
 COPY . .
 
-CMD [ "python","downloader.py" ]
+CMD [ "xvfb-run","python","downloader.py" ]
