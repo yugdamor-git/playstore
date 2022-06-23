@@ -50,7 +50,7 @@ services:
   
   tor-proxy:
     image: dperson/torproxy
-
+    restart: always
     ports:
-        - "8118:8118"
+        - "8117:8118"
         - "9050:9050"
