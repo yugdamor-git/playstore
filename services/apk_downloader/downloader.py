@@ -71,7 +71,7 @@ class ApkDownloader:
             
             # self.driver.page.on("response",self.handle_response)
             
-            with self.driver.page.expect_download(timeout=10 * 1000) as download_info:
+            with self.driver.page.expect_download(timeout=30 * 1000) as download_info:
                 self.driver.page.goto(url)
             
             file = download_info.value
