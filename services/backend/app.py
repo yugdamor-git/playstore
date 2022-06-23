@@ -8,6 +8,7 @@ from apkpure_scraper import ApkpureScraper
 
 
 app = Flask(__name__)
+
 CORS(app)
 
 db = Database()
@@ -84,7 +85,7 @@ def get_recent_application():
     }),200
 
 @app.route('/get-application-details',method=["GET"])
-def get_recent_application():
+def get_application_details():
     default_limit = 20
     
     package_id = request.args.get("package_id")
