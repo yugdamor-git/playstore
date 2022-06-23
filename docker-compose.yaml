@@ -23,7 +23,7 @@ services:
     volumes:
       - ./services/downloads:/downloads
     ports: 
-        - "6000:5000"
+        - "6001:5000"
     restart: always
 
     env_file: .env
