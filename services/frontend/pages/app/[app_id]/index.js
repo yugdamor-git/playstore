@@ -119,7 +119,7 @@ const AppDetails = ({data}) => {
                                         </IconButton>
                                     }
                                     key={index}>
-                                        <ListItemText primary={`${item.version} - ${item.status}`} secondary={`${item.published_on_text} - ${item.size_text} - ${item.type} - ${item.version_code}`}/>
+                                        <ListItemText primary={`${item.version} - ${item.status}`} secondary={`${item.published_on_text} - ${item.size_text} - ${item.version_code}`}/>
 
                                     </ListItem>
 
