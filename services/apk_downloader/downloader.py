@@ -99,7 +99,7 @@ if __name__ == "__main__":
         db.update_apk(
             apk["_id"],
             {
-                "status":"active",
+                "status":"download",
                 "local_file_name":filename
             }
         )
