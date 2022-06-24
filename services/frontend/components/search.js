@@ -23,7 +23,22 @@ const Search = () => {
    async function fetchSuggestions(keyword)
     {
         let url = `${backend_base_url}/get-suggestion?q=${keyword}`
-        const response = await fetch(url);
+        let auth_toke = get_auth_token()
+        let headers = {'Content-Type': 'application/json'}
+        if(auth_toke != undefined)
+        {
+            headers['Authorization'] = `Bearer ${auth_token}`
+        }
+        const response = await fetch(url,{
+            headers:headers
+        });
+
+        if(response.status != 200)
+        {
+            router?.push("/login")
+            return
+        }
+
         const json_data = await response.json()
         console.log(json_data)
         return json_data["data"]
@@ -60,7 +75,7 @@ const Search = () => {
 
         if (response.status != 200)
         {
-            router.push("/login")
+            router?.push("/login")
             return
         }
         const json_data = await response.json()

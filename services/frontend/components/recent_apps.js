@@ -39,7 +39,7 @@ const MyApps = ({data}) => {
             }
             else{
 
-                router.push("/login")
+                router?.push("/login")
             }
         }
         else
