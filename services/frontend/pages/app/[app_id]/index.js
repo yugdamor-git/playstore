@@ -21,15 +21,22 @@ const AppDetails = () => {
 
     function fetch_app_details(app_id)
     {
-    const response = fetch(`${backend_base_url}/get-application-details?package_id=${app_id}`,{
-        headers:{
-            'Authorization':`Bearer ${get_auth_token()}`
+
+        let auth_toke = get_auth_token()
+        let headers = {}
+        if(auth_toke != undefined)
+        {
+            headers['Authorization'] = `Bearer ${auth_token}`
         }
+
+
+    const response = fetch(`${backend_base_url}/get-application-details?package_id=${app_id}`,{
+        headers:headers
     })
 
     if (response.status != 200)
     {
-        return
+        router.push("/login")
     }
 
     const data = response.json()
@@ -58,8 +65,22 @@ const AppDetails = () => {
     {
         const url = `${backend_base_url}/delete-application?package_id=${id}`
 
-        const response = await fetch(url)
+        let auth_toke = get_auth_token()
+        let headers = {}
+        if(auth_toke != undefined)
+        {
+            headers['Authorization'] = `Bearer ${auth_token}`
+        }
 
+        const response = await fetch(url,{
+            headers:headers
+        })
+
+        if(response.status != 200)
+        {
+            router.push("/login")
+            return
+        }
         const json_data = await response.json()
 
         setSnackbar({
@@ -76,12 +97,18 @@ const AppDetails = () => {
         const item = {
             "description":latest_text
         }
+
+        let auth_toke = get_auth_token()
+        let headers = {'Content-Type': 'application/json'}
+        if(auth_toke != undefined)
+        {
+            headers['Authorization'] = `Bearer ${auth_token}`
+        }
+
         let url = `${backend_base_url}/update-application?package_id=${id}`
         const response = await fetch(url,{
             method:'POST',
-            headers: {
-                        'Content-Type': 'application/json'
-                    },
+            headers: headers,
             body:JSON.stringify({"data":item})
         });
         const json_data = await response.json()

@@ -1,5 +1,6 @@
 import { Add } from '@mui/icons-material'
 import { Avatar, Box, Divider, IconButton, Link, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Snackbar, Stack, TextField } from '@mui/material'
+import { useRouter } from 'next/router'
 import React, { useState } from 'react'
 import { backend_base_url } from '../src/config'
 import { get_auth_token } from '../src/helper'
@@ -8,6 +9,8 @@ const Search = () => {
 
    
     const [suggestions,setSuggestions] = useState([])
+
+    const router = useRouter()
 
     const [snackbar,setSnackbar] = useState(
         {
@@ -40,17 +43,24 @@ const Search = () => {
     async function add_app(item)
     {
         let url = `${backend_base_url}/add-application`
+
+        let auth_toke = get_auth_token()
+        let headers = {'Content-Type': 'application/json'}
+        if(auth_toke != undefined)
+        {
+            headers['Authorization'] = `Bearer ${auth_token}`
+        }
+
+
         const response = await fetch(url,{
             method:'POST',
-            headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization':`Bearer ${get_auth_token()}`
-                    },
+            headers: headers,
             body:JSON.stringify({"data":item})
         });
 
         if (response.status != 200)
         {
+            router.push("/login")
             return
         }
         const json_data = await response.json()

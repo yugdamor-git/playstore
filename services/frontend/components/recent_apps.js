@@ -1,5 +1,6 @@
 import { Avatar, Badge, Box, Button, colors, Grid, Link, Paper, Stack, TextField, Typography } from '@mui/material'
 import { color } from '@mui/system'
+import { useRouter } from 'next/router'
 import React, { useState } from 'react'
 import { backend_base_url } from '../src/config'
 import { get_auth_token } from '../src/helper'
@@ -9,6 +10,8 @@ const MyApps = ({data}) => {
   
     const [apps,setApps] = useState(data)
 
+    const router = useRouter()
+
     async function search_apps(keyword)
     {
 
@@ -17,10 +20,15 @@ const MyApps = ({data}) => {
             backend_base_url
             const url = `${backend_base_url}/search-applications?limit=20&keyword=${keyword}`
 
+            let auth_toke = get_auth_token()
+            let headers = {}
+            if(auth_toke != undefined)
+            {
+                headers['Authorization'] = `Bearer ${auth_token}`
+            }
+
             const response = await fetch(url,{
-                headers:{
-                    'Authorization':`Bearer ${get_auth_token()}`
-                }
+                headers:headers
             })
             
             if (response.status == 200)
@@ -28,6 +36,10 @@ const MyApps = ({data}) => {
                 const json_data = await response.json()
 
                 setApps(json_data.data)
+            }
+            else{
+
+                router.push("/login")
             }
         }
         else
