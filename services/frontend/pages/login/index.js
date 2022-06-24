@@ -101,5 +101,11 @@ export async function getServerSideProps(context) {
             }
       }
     }
+    else {
+
+        return {
+            props:{}
+        }
+    }
   }
 
