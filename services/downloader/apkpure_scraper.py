@@ -148,12 +148,12 @@ class ApkpureScraper:
             return False,None,None,error_message
 
         download_link = soup.find("a",{"id":"download_link"}).get("href")
-        
+        print(f'download link : {download_link}')
         file_bytes = None
         
         for i in range(0,self.max_retry):
             try:
-                response = self.wd.get(download_link,proxies=self.proxy)
+                response = self.wd.get(download_link)
                 print(response.status_code)
                 if response.status_code == 200:
                     file_bytes = response.content
