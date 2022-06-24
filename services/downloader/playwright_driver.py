@@ -16,9 +16,9 @@ class PlaywrightDriver:
         
         self.playwright = sync_playwright().start()
         
-        self.browser = self.playwright.chromium.launch(headless=self.headless,proxy={"server":"http://108.59.14.208:13081"})
+        self.browser = self.playwright.chromium.launch(headless=self.headless)
         
-        self.page = self.browser.new_page(user_agent="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.51 Safari/537.36",record_video_dir="videos/")
+        self.page = self.browser.new_page(user_agent="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.51 Safari/537.36")
     
     def stop(self):
         

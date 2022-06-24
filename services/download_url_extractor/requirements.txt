@@ -1,7 +1,0 @@
-flask
-bs4
-playwright
-pymongo
-jsonschema
-python-dateutil
-gevent
