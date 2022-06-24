@@ -5,14 +5,11 @@ from playwright_driver import PlaywrightDriver
 driver = PlaywrightDriver()
 
 driver.start()
+def handle(response):
+    url = response.url
+    if "https://download.apkpure.com" in url:
+        print(response.headers["location"])
 
-with driver.page.expect_download() as download_info:
-    driver.page.goto(url)
-    
-file = download_info.value
-
-file.save_as("test.apk")
-
-print(file.url)
+driver.page.goto(url)
 
 driver.stop()
