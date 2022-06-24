@@ -44,8 +44,6 @@ app.config["JWT_SECRET_KEY"] = "3bc27a33-ac7d-4f15-be44-2748de7c9d57"
 app.config["JWT_TOKEN_LOCATION"] = ["headers"]
 
 app.config['JWT_ACCESS_TOKEN_EXPIRES'] = timedelta(days=365*100)
-app.config["JWT_HEADER_TYPE"] = "Bearer"
-app.config['PROPOGATE_EXCEPTIONS'] = False
 
 jwt = JWTManager(app)
 
@@ -55,7 +53,7 @@ app.json_encoder = JSONEncoder
 
 @jwt.unauthorized_loader
 def unauthorized_response(callback):
-    return redirect("http://148.251.41.232:3000",302)
+    return jsonify({}),302
 
 db = Database()
 
