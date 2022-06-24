@@ -2,7 +2,7 @@ from pathlib import Path
 from apkpure_scraper import ApkpureScraper
 from database import Database
 from helper import generate_file_id,calc_timeout
-
+import time
 
 class Downloader:
     def __init__(self) -> None:
@@ -50,7 +50,10 @@ class Downloader:
 
 
 if __name__ == "__main__":
-    d = Downloader()
-    d.process_pending_applications()
-    
+    max_run = 10
+    for i in range(0,10):
+        d = Downloader()
+        d.process_pending_applications()
+        time.sleep(2)
+        
 

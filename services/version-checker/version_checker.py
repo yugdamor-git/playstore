@@ -3,6 +3,7 @@ from database import Database
 from helper import generate_file_id
 from apkpure_scraper import ApkpureScraper
 import os
+import time
 
 class VersionChecker:
     def __init__(self) -> None:
@@ -52,5 +53,8 @@ class VersionChecker:
         os.exit(0)
         
 if __name__ == "__main__":
-    vc = VersionChecker()
-    vc.main()
+    max_run = 10
+    for i in range(0,10):
+        vc = VersionChecker()
+        vc.main()
+        time.sleep(2)

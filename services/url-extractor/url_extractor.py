@@ -1,6 +1,6 @@
 from database import Database
 from playwright_driver import PlaywrightDriver
-
+import time
 class DownloadUrlExtractor:
     def __init__(self) -> None:
         self.db = Database()
@@ -57,5 +57,8 @@ class DownloadUrlExtractor:
         
 
 if __name__ == "__main__":
-    due = DownloadUrlExtractor()
-    due.main()
+    max_run = 10
+    for i in range(0,10):
+        due = DownloadUrlExtractor()
+        due.main()
+        time.sleep(2)
