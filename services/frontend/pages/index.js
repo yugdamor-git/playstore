@@ -9,7 +9,7 @@ export default function Index() {
   
   function fetch_recent_apps()
   {
-    const response = fetch(`${backend__internal_base_url}/get-recent-application?limit=15`,{
+    const response = fetch(`${backend_base_url}/get-recent-application?limit=15`,{
       headers:{
         'Authorization':`Bearer ${get_auth_token()}`
       }
