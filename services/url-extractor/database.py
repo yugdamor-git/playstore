@@ -9,7 +9,7 @@ from helper import generate_sha1_hex,get_current_timestamp
 
 user = os.environ.get("MONGO_USERNAME")
 password = os.environ.get("MONGO_PASSWORD")
-host = "localhost:27020"
+host = "mongodb:27017"
 
 class Database:
     def __init__(self):

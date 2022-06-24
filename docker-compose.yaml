@@ -48,6 +48,13 @@ services:
 
     env_file: .env
   
+  url-extractor:
+    build: ./services/url-extractor/
+
+    restart: always
+
+    env_file: .env
+
   tor-proxy:
     image: dperson/torproxy
     restart: always
