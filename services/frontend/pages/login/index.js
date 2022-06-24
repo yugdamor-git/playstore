@@ -33,7 +33,7 @@ const Login = () => {
             return
         }
         const url = `${backend_base_url}/auth`
-        data = {
+        let data = {
             'email':username,
             'password':password
         }
