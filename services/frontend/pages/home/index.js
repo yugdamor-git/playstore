@@ -77,7 +77,7 @@ export async function getServerSideProps(context) {
       
       const data = await response.json()
 
-      if(response.auth == False)
+      if(data.auth == false)
       {
         return {
             redirect: {

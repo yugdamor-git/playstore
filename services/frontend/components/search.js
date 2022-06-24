@@ -33,13 +33,15 @@ const Search = () => {
             headers:headers
         });
 
-        if(response.status == 401)
+        const json_data = await response.json()
+
+        if(json_data.auth == false)
         {
             router?.push("/login")
             return
         }
 
-        const json_data = await response.json()
+        
         console.log(json_data)
         return json_data["data"]
     }
@@ -75,7 +77,7 @@ const Search = () => {
 
         const json_data = await response.json()
 
-        if (response.auth == False)
+        if (json_data.auth == false)
         {
             router?.push("/login")
             return
