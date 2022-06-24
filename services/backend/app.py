@@ -31,7 +31,7 @@ class JSONEncoder(json.JSONEncoder):
             return str(o)
         if isinstance(o, set):
             return list(o)
-        if isinstance(o, datetime.datetime):
+        if isinstance(o, datetime):
             return str(o)
         return json.JSONEncoder.default(self, o)
 
