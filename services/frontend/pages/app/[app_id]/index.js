@@ -78,7 +78,7 @@ const AppDetails = () => {
 
         if(response.status != 200)
         {
-            router.push("/login")
+            router?.push("/login")
             return
         }
         const json_data = await response.json()
@@ -88,7 +88,7 @@ const AppDetails = () => {
             message:json_data.message
         })
 
-        router.push("/")
+        router?.push("/")
 
     }
 
@@ -111,6 +111,13 @@ const AppDetails = () => {
             headers: headers,
             body:JSON.stringify({"data":item})
         });
+
+        if(response.status != 200)
+        {
+            router?.push("/login")
+            return
+        }
+
         const json_data = await response.json()
         
         console.log(json_data)
