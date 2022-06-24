@@ -30,7 +30,10 @@ export default function Index() {
   return (
     <Box>
      <Search/>
-     <MyApps data={recent_apps} />
+     {recent_apps &&
+      <MyApps data={recent_apps} />
+     }
+     
     </Box>
   );
 }
