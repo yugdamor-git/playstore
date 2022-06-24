@@ -160,8 +160,8 @@ class ApkpureScraper:
                     break
                 # self.driver.get(download_link)
                 # soup = BeautifulSoup(self.driver.page_source)
-            except:
-                pass
+            except Exception as e:
+                print(f'error : {str(e)}')
         
         if file_bytes == None:
             error_message = "file bytes are none"
