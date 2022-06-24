@@ -128,32 +128,33 @@ class ApkpureScraper:
     
     def download_apk(self,url,timeout):
         print(f'downloading : {url}')
-        error_message = "no error"
-        soup = None
-        for i in range(0,self.max_retry):
-            try:
-                response = self.wd.get(url,proxies=self.proxy,timeout=3)
-                print(response.status_code)
-                if response.status_code == 200:
-                    soup = BeautifulSoup(response.text)
-                    break
-                # self.driver.get(url)
-                # soup = BeautifulSoup(self.driver.page_source)
-                break
-            except:
-                pass
+        # error_message = "no error"
+        # soup = None
+        # for i in range(0,self.max_retry):
+        #     try:
+        #         response = self.wd.get(url,proxies=self.proxy,timeout=3)
+        #         print(response.status_code)
+        #         if response.status_code == 200:
+        #             soup = BeautifulSoup(response.text)
+        #             break
+        #         # self.driver.get(url)
+        #         # soup = BeautifulSoup(self.driver.page_source)
+        #         break
+        #     except:
+        #         pass
                 
-        if soup == None:
-            error_message = "soup is none"
-            return False,None,None,error_message
+        # if soup == None:
+        #     error_message = "soup is none"
+        #     return False,None,None,error_message
 
-        download_link = soup.find("a",{"id":"download_link"}).get("href")
+        # download_link = soup.find("a",{"id":"download_link"}).get("href")
+        download_link = url
         print(f'download link : {download_link}')
         file_bytes = None
         
         for i in range(0,self.max_retry):
             try:
-                response = self.wd.get(download_link,proxies=self.proxy,timeout=(6,timeout))
+                response = self.wd.get(download_link,timeout=(6,timeout))
                 print(response.status_code)
                 if response.status_code == 200:
                     file_bytes = response.content
