@@ -68,9 +68,9 @@ def auth_user():
     
     data = request.get_json()["data"]
     
-    user = list(db.users.find({'email': data['email']}))
+    u = list(db.users.find({'email': data['email']}))
     
-    if len(user) == 0:
+    if len(u) == 0:
         return jsonify({
             "status":False,
             "message":"the email address is invalid.",
@@ -78,10 +78,12 @@ def auth_user():
         })
     
     
-    pwd = user[0].get("password")
+    user = u[0]
+    
+    pwd = user.get("password")
     
     if user and flask_bcrypt.check_password_hash(pwd, data['password']):
-        del user[0]['password']
+        del user['password']
         del data['password']
         access_token = create_access_token(identity=data)
         refresh_token = create_refresh_token(identity=data)
