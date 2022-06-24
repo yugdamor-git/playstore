@@ -24,11 +24,16 @@ const Navbar = () => {
                 <Typography sx={{ flexGrow: 1 }}>
                     App Manager
                 </Typography>
+                {router.pathname != '/login'&&
+
                 <Box>
-                    <Button startIcon={<Logout/>} color='white'>
-                        Logout
-                    </Button>
+                <Button onClick={()=>logout()} startIcon={<Logout/>} color='white'>
+                    Logout
+                </Button>
                 </Box>
+
+                }
+                
 
             </Toolbar>
         </AppBar>
