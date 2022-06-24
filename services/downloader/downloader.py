@@ -31,6 +31,7 @@ class Downloader:
         pending_applications = list(self.db.application.find({"status":"pending"}))
         
         for application in pending_applications:
+            print(application)
             package_url = application["package_url"]
             package_id = application["_id"]
             

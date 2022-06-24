@@ -126,6 +126,7 @@ class ApkpureScraper:
         return True,data
     
     def download_apk(self,url):
+        print(f'downloading : {url}')
         error_message = "no error"
         soup = None
         for i in range(0,self.max_retry):
