@@ -40,9 +40,19 @@ const AppDetails = () => {
 
     let data = fetch_app_details(app_id)
 
-    const [descriptionText,setDescriptionText] = useState(data.description)
+    let description = ""
+    if (data != null)
+    {
+        description = data.description
+    }
 
-    const files = data.files
+    const [descriptionText,setDescriptionText] = useState(description)
+
+    let files = []
+    if (data != null)
+    {
+        files = data.files
+    }
 
     async function delete_app(id)
     {
