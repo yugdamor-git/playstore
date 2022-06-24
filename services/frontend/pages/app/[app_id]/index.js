@@ -1,6 +1,6 @@
 import { Avatar, Button, colors, Divider, Icon, IconButton, Link, List, ListItem, ListItemText, Paper, Snackbar, Stack, TextField, Typography } from '@mui/material'
 import { Box } from '@mui/system'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import DownloadIcon from '@mui/icons-material/Download';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { backend_base_url } from '../../../src/config';
@@ -18,6 +18,10 @@ const AppDetails = () => {
     const router = useRouter()
 
     const app_id = router?.query.app_id
+
+    const [data,setData] = useState(null)
+    
+
 
     function fetch_app_details(app_id)
     {
@@ -46,15 +50,13 @@ const AppDetails = () => {
     return data["data"]
     
     }
-    let data = null
-    try
-    {
-        data = fetch_app_details(app_id)
-    }
-    catch
-    {
+    
+    useEffect(() => {
+        
+        let data = fetch_app_details()
+        setData(data)
 
-    }
+      },[])
 
     let description = ""
     if (data != null)

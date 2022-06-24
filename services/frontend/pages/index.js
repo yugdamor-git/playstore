@@ -32,14 +32,14 @@ export default function Index() {
     const data = response.json()
     return data["data"]
   }
-  let recent_apps = null
-  try{
-    recent_apps = fetch_recent_apps()
-  }
-  catch
-  {
+  let [recentApps,setRecentApps] = React.useState(null)
 
-  }
+
+  useEffect(() => {
+    let recent_apps = fetch_recent_apps()
+    setRecentApps(recent_apps)
+  },[])
+
   
 
   return (
