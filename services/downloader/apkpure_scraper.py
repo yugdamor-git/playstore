@@ -2,6 +2,7 @@ import json
 from bs4 import BeautifulSoup
 import cloudscraper
 from helper import string_to_datetime
+import requests
 
 
 class ApkpureScraper:
@@ -154,7 +155,7 @@ class ApkpureScraper:
         
         for i in range(0,self.max_retry):
             try:
-                response = self.wd.get(download_link,timeout=(6,timeout))
+                response = requests.get(download_link,timeout=(6,timeout))
                 print(response.status_code)
                 if response.status_code == 200:
                     file_bytes = response.content
