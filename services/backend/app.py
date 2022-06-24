@@ -6,7 +6,7 @@ from pathlib import Path
 import shutil
 from apkpure_scraper import ApkpureScraper
 from ttl_token import TllToken
-from datetime import datetime
+from datetime import datetime,timedelta
 
 
 import json
@@ -41,7 +41,7 @@ CORS(app)
 
 app.config["JWT_SECRET_KEY"] = "3bc27a33-ac7d-4f15-be44-2748de7c9d57"
 
-app.config['JWT_ACCESS_TOKEN_EXPIRES'] = datetime.timedelta(days=365*100)
+app.config['JWT_ACCESS_TOKEN_EXPIRES'] = timedelta(days=365*100)
 
 jwt = JWTManager(app)
 
