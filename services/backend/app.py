@@ -56,7 +56,8 @@ def search_applications():
     
     return jsonify({
         "status":True,
-        "message":data
+        "message":"",
+        "data":data
     })
 
 @app.route('/delete-application',methods=["GET"])
