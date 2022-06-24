@@ -47,7 +47,7 @@ class DownloadUrlExtractor:
             try:
                 self.db.update_application(app["_id"],{"error_count":app["error_count"] + 1})
                 self.current_id = app["_id"]
-                url = app["package_url"] + "/download?from=details"
+                url = app["download_page_url"]
                 self.wd.page.goto(url)
             except Exception as e:
                 print(str(e))
