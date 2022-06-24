@@ -36,8 +36,9 @@ const AppDetails = () => {
 
     if (response.status != 200)
     {
+
+        router?.push("/login")
         return
-        // router?.push("/login")
     }
 
     const data = response.json()
@@ -45,8 +46,15 @@ const AppDetails = () => {
     return data["data"]
     
     }
+    let data = null
+    try
+    {
+        data = fetch_app_details(app_id)
+    }
+    catch
+    {
 
-    let data = fetch_app_details(app_id)
+    }
 
     let description = ""
     if (data != null)
@@ -115,7 +123,7 @@ const AppDetails = () => {
 
         if(response.status != 200)
         {
-            // router?.push("/login")
+            router?.push("/login")
             return
         }
 

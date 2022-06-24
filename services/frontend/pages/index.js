@@ -25,16 +25,22 @@ export default function Index() {
 
     if (response.status != 200)
     {
-      // router?.push("/login")
+      router?.push("/login")
       return
     }
 
     const data = response.json()
     return data["data"]
   }
-  
+  let recent_apps = null
+  try{
+    recent_apps = fetch_recent_apps()
+  }
+  catch
+  {
 
-  const recent_apps = fetch_recent_apps()
+  }
+  
 
   return (
     <Box>
