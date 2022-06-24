@@ -45,7 +45,7 @@ app.config["JWT_TOKEN_LOCATION"] = ["headers"]
 
 app.config['JWT_ACCESS_TOKEN_EXPIRES'] = timedelta(days=365*100)
 
-app.config['PROPOGATE_EXCEPTIONS'] = True
+app.config['PROPOGATE_EXCEPTIONS'] = False
 
 jwt = JWTManager(app)
 
