@@ -119,11 +119,15 @@ class Database:
         )
     
     def get_recent_application(self,limit):
+        tmp = {}
+        
         apps = list(
             self.application.find({}).sort("updated_at",pymongo.DESCENDING).limit(limit)
         )
         
-        return apps
+        tmp["total_apps"] = self.application.count_documents({})
+        tmp["apps"] = apps
+        return tmp
     def _get_application_by_package_id(self,package_id):
         apps = list(self.application.find({"_id":package_id}))
         return apps

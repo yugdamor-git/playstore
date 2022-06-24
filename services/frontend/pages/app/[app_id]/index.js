@@ -6,71 +6,19 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import { backend_base_url } from '../../../src/config';
 import { useRouter } from 'next/router'
 import { get_auth_token } from '../../../src/helper';
-const AppDetails = () => {
+const AppDetails = ({data}) => {
 
+    const router = useRouter()
+    
     const [snackbar,setSnackbar] = useState(
         {
             show:false,
             message:""
         }
     )
-
-    const router = useRouter()
-
-    const app_id = router?.query.app_id
-
-    const [data,setData] = useState(null)
     
 
-
-    function fetch_app_details(app_id)
-    {
-
-        let auth_token = get_auth_token()
-        let headers = {}
-        if(auth_token != undefined)
-        {
-            headers['Authorization'] = `Bearer ${auth_token}`
-        }
-
-
-    const response = fetch(`${backend_base_url}/get-application-details?package_id=${app_id}`,{
-        headers:headers
-    })
-
-    if (response.status != 200)
-    {
-
-        router?.push("/login")
-        return
-    }
-
-    const data = response.json()
-
-    return data["data"]
-    
-    }
-    
-    useEffect(() => {
-        
-        let data = fetch_app_details()
-        setData(data)
-
-      },[])
-
-    let description = ""
-    if (data != null)
-    {
-        description = data.description
-    }
-
-    const [descriptionText,setDescriptionText] = useState(description)
-
-    let files = []
-    if (data != null)
-    {
-        files = data.files
-    }
+    const [descriptionText,setDescriptionText] = useState(data.description)
 
     async function delete_app(id)
     {
@@ -87,12 +35,14 @@ const AppDetails = () => {
             headers:headers
         })
 
-        if(response.status != 200)
+        const json_data = await response.json()
+
+        if(json_data.auth == false)
         {
             router?.push("/login")
             return
         }
-        const json_data = await response.json()
+        
 
         setSnackbar({
             show:true,
@@ -123,13 +73,15 @@ const AppDetails = () => {
             body:JSON.stringify({"data":item})
         });
 
-        if(response.status != 200)
+        const json_data = await response.json()
+
+        if(json_data.auth == false)
         {
             router?.push("/login")
             return
         }
 
-        const json_data = await response.json()
+        
         
         console.log(json_data)
         
@@ -194,8 +146,8 @@ const AppDetails = () => {
                 </Paper>
                 <List>
                     {
-                        files.map((item,index)=>(
-                            <Box marginY={2}>
+                        data.files.map((item,index)=>(
+                            <Box key={index} marginY={2}>
                                 <Paper elevation={1}>
                                     <ListItem
                                     secondaryAction={
@@ -223,3 +175,42 @@ const AppDetails = () => {
 }
 
 export default AppDetails
+
+
+export async function getServerSideProps(context) {
+
+    const cookies = context.req.cookies
+
+    const app_id = context.query.app_id
+    
+    const auth_token = cookies["auth_token"]
+    
+    let headers = {}
+
+    if(auth_token != undefined)
+      {
+          headers['Authorization'] = `Bearer ${auth_token}`
+      }
+
+      const response = await fetch(`${backend_base_url}/get-application-details?package_id=${app_id}`,{
+        headers:headers
+    })
+      
+      const data = await response.json()
+
+      if(data.auth == false)
+      {
+        return {
+            redirect: {
+              permanent: false,
+              destination: "/login"
+            }
+      }
+    }
+
+    return {
+      props: {
+        "data":data["data"]
+      }, // will be passed to the page component as props
+    }
+  }

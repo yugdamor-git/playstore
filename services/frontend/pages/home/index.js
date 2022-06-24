@@ -62,15 +62,17 @@ export default Home
 
 export async function getServerSideProps(context) {
 
-    const cookies = context.req.headers.cookie;
-
+    const cookies = context.req.cookies
+    
     const auth_token = cookies["auth_token"]
+    
     let headers = {}
+
     if(auth_token != undefined)
       {
           headers['Authorization'] = `Bearer ${auth_token}`
       }
-      
+      console.log(headers)
       const response = await fetch(`${backend_base_url}/get-recent-application?limit=15`,{
         headers:headers
       })

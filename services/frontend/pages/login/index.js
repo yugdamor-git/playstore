@@ -3,7 +3,7 @@ import { Button, Snackbar, Stack, TextField, Typography } from '@mui/material'
 import { useRouter } from 'next/router'
 import React, { useState } from 'react'
 import { backend_base_url } from '../../src/config'
-import { set_auth_token } from '../../src/helper'
+import { get_auth_token, set_auth_token } from '../../src/helper'
 
 const Login = () => {
 
@@ -84,3 +84,31 @@ const Login = () => {
 }
 
 export default Login
+
+
+export async function getServerSideProps(context) {
+
+    const cookies = context.req.cookies
+    
+    const auth_token = cookies["auth_token"]
+
+    if(auth_token == null)
+    {
+        return {
+            redirect: {
+              permanent: false,
+              destination: "/login"
+            }
+      }
+    }
+    else
+    {
+        return {
+            redirect: {
+              permanent: false,
+              destination: "/home"
+            }
+      }
+    }
+  }
+

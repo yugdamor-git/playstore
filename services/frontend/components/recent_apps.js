@@ -8,7 +8,7 @@ import { get_auth_token } from '../src/helper'
 const MyApps = ({data}) => {
 
   
-    const [apps,setApps] = useState(data)
+    const [apps,setApps] = useState(data.apps)
 
     const router = useRouter()
 
@@ -55,9 +55,10 @@ const MyApps = ({data}) => {
             <Paper variant='outlined' sx={{bgcolor:'primary.main'}}>
             <Typography variant='h6' color="white.main" textAlign='center'>Recent Apps</Typography>
             </Paper>
-            <Box marginTop={2}>
+            <Box marginTop={2} marginBottom={2}>
             <TextField onChange={(e)=>search_apps(e.target.value)} fullWidth label='Search Downloaded App' id='search'/>
             </Box>
+            <Typography textAlign='center'>{`Total Apps : ${data.total_apps}`}</Typography>
             <Grid marginTop={1} container spacing={2}
     justifyContent="space-evenly"
     alignItems="center"  columns={{xs:3}}>
