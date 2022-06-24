@@ -33,7 +33,7 @@ const Search = () => {
             headers:headers
         });
 
-        if(response.status != 200)
+        if(response.status == 401)
         {
             router?.push("/login")
             return
@@ -73,7 +73,7 @@ const Search = () => {
             body:JSON.stringify({"data":item})
         });
 
-        if (response.status != 200)
+        if (response.status == 401)
         {
             router?.push("/login")
             return

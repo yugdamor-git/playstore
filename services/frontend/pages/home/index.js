@@ -25,7 +25,7 @@ const Home = () => {
         headers:headers
       })
   
-      if (response.status != 200)
+      if (response.status == 401)
       {
         router?.push("/login")
         return
