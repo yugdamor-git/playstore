@@ -113,7 +113,7 @@ def get_application_details():
 
 @app.route('/media/<folderName>/<fileName>')
 def download_file(folderName,fileName):
-    apk_data = list(db.files.find({"_id":fileName}))[0]
+    apk_data = list(db.files.find({"version_unique_id":fileName}))[0]
     
     download_name = apk_data["filename"] + ".apk"
     
