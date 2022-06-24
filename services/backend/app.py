@@ -53,7 +53,7 @@ app.json_encoder = JSONEncoder
 
 @jwt.unauthorized_loader
 def unauthorized_response(callback):
-    return redirect("http://148.251.41.232:3000",302)
+    return jsonify({}),401
 
 db = Database()
 
