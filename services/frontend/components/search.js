@@ -91,6 +91,8 @@ const Search = () => {
             message:json_data.message
         })
 
+        router?.reload()
+
         return json_data
     }
 
