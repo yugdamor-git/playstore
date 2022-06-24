@@ -10,7 +10,7 @@ export default function IndexRoute() {
   
   const router = useRouter()
 
-  router.push("/home")
+  router?.push("/home")
   
 
   
