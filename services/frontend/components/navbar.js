@@ -8,9 +8,11 @@ import { remove_auth_cookie } from '../src/helper';
 
 const Navbar = () => {
     const router = useRouter()
-    function logout()
-    {
+    function logout(e)
+    {   e.preventDefault()
+
         remove_auth_cookie()
+
         router.push("/login")
 
     }
@@ -27,7 +29,7 @@ const Navbar = () => {
                 {router.pathname != '/login'&&
 
                 <Box>
-                <Button onClick={()=>logout()} startIcon={<Logout/>} color='white'>
+                <Button startIcon={<Logout/>} color='white'>
                     Logout
                 </Button>
                 </Box>
