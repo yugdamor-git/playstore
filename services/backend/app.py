@@ -125,8 +125,9 @@ def register():
 
 
 # to get search suggestion from keyword
-@jwt_required()
+
 @app.route('/get-suggestion')
+@jwt_required()
 def get_suggestion():
     keyword = request.args.get("q")
     
@@ -160,8 +161,9 @@ def add_application():
 def fetch_icon(id):
     return send_from_directory(f'/downloads/{id}',"icon.png")
 
-@jwt_required()
+
 @app.route('/search-applications',methods=["GET"])
+@jwt_required()
 def search_applications():
     default_limit = 20
     limit = request.args.get("limit")
@@ -178,8 +180,9 @@ def search_applications():
         "data":data
     })
 
-@jwt_required()
+
 @app.route('/delete-application',methods=["GET"])
+@jwt_required()
 def delete_application():
     package_id = request.args.get("package_id")
     
@@ -190,8 +193,9 @@ def delete_application():
         "message":message
     })
 
-@jwt_required()
+
 @app.route('/update-application',methods=["POST"])
+@jwt_required()
 def update_application():
     package_id = request.args.get("package_id")
     
@@ -204,8 +208,9 @@ def update_application():
         "message":"data updated"
     }),200
 
-@jwt_required()
+
 @app.route('/get-recent-application',methods=["GET"])
+@jwt_required()
 def get_recent_application():
     default_limit = 20
     
@@ -221,8 +226,9 @@ def get_recent_application():
         "data":recent_application
     }),200
 
-@jwt_required()
+
 @app.route('/get-application-details',methods=["GET"])
+@jwt_required()
 def get_application_details():
     package_id = request.args.get("package_id")
     
