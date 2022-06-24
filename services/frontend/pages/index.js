@@ -9,7 +9,7 @@ export default function IndexRoute() {
   
   useEffect(() => {
         
-    router.push("/home")
+    router.push("/login")
 
   },[])
   
