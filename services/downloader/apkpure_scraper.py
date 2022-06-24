@@ -18,8 +18,8 @@ class ApkpureScraper:
         self.base_url = "https://apkpure.com"
         
         self.proxy = {
-            "http":"http://108.59.14.203:13081",
-            "https":"http://108.59.14.203:13081"
+            "http":"http://63.141.236.210:19001",
+            "https":"http://63.141.236.210:19001"
         }
 
         self.headers = {
