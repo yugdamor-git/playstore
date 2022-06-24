@@ -54,7 +54,7 @@ const Login = () => {
         else{
             const auth_token = json_data["data"]["token"]
             set_auth_token(auth_token)
-            router.push('/')
+            router.push('/home')
 
         }
 
