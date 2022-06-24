@@ -81,7 +81,7 @@ def auth_user():
     pwd = user[0].get("password")
     
     if user and flask_bcrypt.check_password_hash(pwd, data['password']):
-        del user['password']
+        del user[0]['password']
         del data['password']
         access_token = create_access_token(identity=data)
         refresh_token = create_refresh_token(identity=data)
