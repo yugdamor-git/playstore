@@ -11,7 +11,7 @@ const Home = () => {
     const router = useRouter()
 
 
-    function fetch_recent_apps()
+    async function fetch_recent_apps()
     {
   
       let auth_token = get_auth_token()
@@ -21,7 +21,7 @@ const Home = () => {
           headers['Authorization'] = `Bearer ${auth_token}`
       }
       
-      const response = fetch(`${backend_base_url}/get-recent-application?limit=15`,{
+      const response = await fetch(`${backend_base_url}/get-recent-application?limit=15`,{
         headers:headers
       })
   
@@ -31,13 +31,16 @@ const Home = () => {
         return
       }
   
-      const data = response.json()
+      const data = await response.json()
       return data["data"]
     }
+
+
     let [recentApps,setRecentApps] = React.useState(null)
   
   
     React.useEffect(() => {
+        
       let recent_apps = fetch_recent_apps()
       setRecentApps(recent_apps)
     },[])
