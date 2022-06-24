@@ -23,19 +23,34 @@ class DownloadUrlExtractor:
                     }
                 }
             )
-            
+    
+    def handle_routes(self,route):
+        url = route.request.url
+        
+        if "https://m.apkpure.com" in url or "https://apkpure.com" in url:
+            return route._continue()
+        else:
+            return route.abort()
     
     def main(self):
         
-        pending_apps = list(self.db.application.find({"status":"pending"}))
+        pending_apps = list(self.db.application.find({"status":"pending","error_count":{"$lt":10}}))
         
         self.wd.start()
+        
+        self.wd.page.route("*/**",self.handle_routes)
+        self.wd.page.on("response",self.handle_response)
+        
         for app in pending_apps:
             print(app)
-            self.current_id = app["_id"]
-            url = app["package_url"] + "/download?from=details"
-            self.wd.page.on("response",self.handle_response)
-            self.wd.page.goto(url)
+            try:
+                self.db.update_application(app["_id"],{"error_count":app["error_count"] + 1})
+                self.current_id = app["_id"]
+                url = app["package_url"] + "/download?from=details"
+                self.wd.page.goto(url)
+            except Exception as e:
+                print(str(e))
+                
             
         self.wd.stop()
         
