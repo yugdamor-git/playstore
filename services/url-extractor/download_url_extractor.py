@@ -26,11 +26,12 @@ class DownloadUrlExtractor:
     
     def handle_routes(self,route):
         url = route.request.url
-        
-        if "https://m.apkpure.com" in url or "https://apkpure.com" in url:
-            return route.continue_()
-        else:
-            return route.abort()
+        print(url)
+        return route.continue_()
+        # if "https://m.apkpure.com" in url or "https://apkpure.com" in url:
+        #     return route.continue_()
+        # else:
+        #     return route.abort()
     
     def main(self):
         
