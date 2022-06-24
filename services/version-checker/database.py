@@ -1,5 +1,7 @@
 from datetime import datetime
 from pathlib import Path
+import uuid
+from importlib_metadata import files, version
 import pymongo
 import os
 import shutil
@@ -34,19 +36,6 @@ class Database:
         
         return apps
     
-    def search_applications(self,keyword,limit):
-        
-        apps = list(self.application.find(
-            {
-                "title":{
-                    "$regex":keyword,
-                    '$options' : 'i'
-                }
-            }
-        ).limit(limit))
-        
-        return apps
-    
     def add_application(self,data):
         
         package_name = data["package_name"]
@@ -61,7 +50,7 @@ class Database:
         data["_id"] = id
         data["created_at"] = get_current_timestamp()
         data["updated_at"] = get_current_timestamp()
-        data["status"] = "scraping"
+        data["status"] = "pending"
         data["error_count"] = 0
         
         self.application.insert_one(data)
@@ -118,17 +107,20 @@ class Database:
     def _get_application_by_package_id(self,package_id):
         apps = list(self.application.find({"_id":package_id}))
         return apps
-    
     def get_application_details(self,package_id):
         
-        app = self._get_application_by_package_id(package_id)
+        app = self._get_application_by_package_id()
         
-        if len(app) == 0:
+        if len(app) > 0:
             return False,None
         
         application_details = app[0]
         
+        application_version = list(self.version.find({"package_id":package_id}).sort("updated_at",pymongo.DESCENDING))
+        
         application_files = list(self.files.find({"package_id":package_id}).sort("published_on_timestamp",pymongo.DESCENDING))
+        
+        application_details["versions"] = application_version
         
         application_details["files"] = application_files
         
@@ -137,9 +129,11 @@ class Database:
     def add_file(self,data):
         data["created_at"] = get_current_timestamp()
         data["updated_at"] = get_current_timestamp()
-        try:
+        files = list(self.files.find({"version_unique_id":data["version_unique_id"]}))
+        data["_id"] = str(uuid.uuid4())
+        if len(files) > 0:
+            return False
+        else:
             self.files.insert_one(data)
             return True
-        except:
-            return False
         
