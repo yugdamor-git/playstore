@@ -2,6 +2,7 @@ from datetime import datetime
 from database import Database
 from helper import generate_file_id
 from apkpure_scraper import ApkpureScraper
+import os
 
 class VersionChecker:
     def __init__(self) -> None:
@@ -39,6 +40,7 @@ class VersionChecker:
             data["filename"] = filename
             data["package_id"] = package_id
             data["version_unique_id"] = file_id
+            data["error_count"] = 0
             
             self.db.add_file(data)
             
@@ -47,7 +49,8 @@ class VersionChecker:
             t2 = datetime.now()
             
             print(f'total seconds : {(t2 - t1).seconds}')
-            
+        os.exit(0)
+        
 if __name__ == "__main__":
     vc = VersionChecker()
     vc.main()

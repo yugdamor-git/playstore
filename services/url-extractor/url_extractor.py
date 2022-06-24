@@ -14,11 +14,11 @@ class DownloadUrlExtractor:
         if "https://download.apkpure.com" in url:
             download_url = response.headers["location"]
             print(download_url)
-            self.db.application.update_one(
+            self.db.files.update_one(
                 {"_id":self.current_id},
                 {
                     "$set":{
-                        "status":"scraped",
+                        "status":"downloading",
                         "app_download_url":download_url
                     }
                 }
@@ -35,7 +35,7 @@ class DownloadUrlExtractor:
     
     def main(self):
         
-        pending_apps = list(self.db.application.find({"status":"processing","error_count":{"$lt":10}}))
+        pending_apps = list(self.db.files.find({"status":"scraped","error_count":{"$lt":10}}))
         
         self.wd.start()
         

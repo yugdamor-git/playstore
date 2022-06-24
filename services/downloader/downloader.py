@@ -28,48 +28,25 @@ class Downloader:
     
     def process_pending_applications(self):
         
-        pending_applications = list(self.db.application.find({"status":"scraped"}))
+        pending_applications = list(self.db.files.find({"status":"downloading","error_count":{"$lt":10}}))
         
         for application in pending_applications:
             print(application)
-            package_url = application["package_url"]
-            package_id = application["_id"]
-            
-            status,data = self.scraper.scrape_app_details(package_url)
-            
-            print(data)
-            
-            if status == False:
-                self.db.update_application(package_id,{"error_count":application["error_count"] + 1})
-                continue
-            
-            data["status"] = "active"
-            
-            package_name = application["package_name"]
-            version = data["version"]
-            version_code = data["version_code"]
-            published_on = data["published_on_text"]
-            download_page_url = data["download_page_url"]
+            package_id = application["package_id"]
             app_download_url = application["app_download_url"]
+            file_id = application["version_unique_id"]
             
-            filename,file_id = generate_file_id(package_name,version,version_code,published_on)
-            time_out = calc_timeout(data["size_bytes"])
+            time_out = calc_timeout(application["size_bytes"])
             status,file_bytes,download_url,error_message = self.scraper.download_apk(app_download_url,time_out)
             print(download_url)
             print(error_message)
             if status == True:
                 self.save_file(package_id,file_id,file_bytes)
-                self.db.update_application(package_id,data)
+                self.db.files.update_one({"_id":application["_id"]},{"$set":{"status":"active"}})
                 
-                data["_id"] = file_id
-                data["status"] = "active"
-                data["filename"] = filename
-                data["download_url"] = download_url
-                data["package_id"] = application["_id"]
-                
-                self.db.add_file(data)
             else:
-                self.db.update_application(package_id,{"error_count":application["error_count"] + 1})
+                self.db.files.update_one({"_id":application["_id"]},{"$set":{"error_count":application["error_count"] + 1}})
+                
 
 
 if __name__ == "__main__":
