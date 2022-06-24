@@ -12,7 +12,7 @@ class DownloadUrlExtractor:
         url = response.url
         if "https://download.apkpure.com" in url:
             download_url = response.headers["location"]
-            
+            print(download_url)
             self.db.application.update_one(
                 {"_id":self.current_id},
                 {
