@@ -20,9 +20,9 @@ const MyApps = ({data}) => {
             backend_base_url
             const url = `${backend_base_url}/search-applications?limit=20&keyword=${keyword}`
 
-            let auth_toke = get_auth_token()
+            let auth_token = get_auth_token()
             let headers = {}
-            if(auth_toke != undefined)
+            if(auth_token != undefined)
             {
                 headers['Authorization'] = `Bearer ${auth_token}`
             }

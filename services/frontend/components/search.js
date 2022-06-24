@@ -23,9 +23,9 @@ const Search = () => {
    async function fetchSuggestions(keyword)
     {
         let url = `${backend_base_url}/get-suggestion?q=${keyword}`
-        let auth_toke = get_auth_token()
+        let auth_token = get_auth_token()
         let headers = {'Content-Type': 'application/json'}
-        if(auth_toke != undefined)
+        if(auth_token != undefined)
         {
             headers['Authorization'] = `Bearer ${auth_token}`
         }
@@ -59,9 +59,9 @@ const Search = () => {
     {
         let url = `${backend_base_url}/add-application`
 
-        let auth_toke = get_auth_token()
+        let auth_token = get_auth_token()
         let headers = {'Content-Type': 'application/json'}
-        if(auth_toke != undefined)
+        if(auth_token != undefined)
         {
             headers['Authorization'] = `Bearer ${auth_token}`
         }

@@ -26,9 +26,9 @@ const AppDetails = () => {
     function fetch_app_details(app_id)
     {
 
-        let auth_toke = get_auth_token()
+        let auth_token = get_auth_token()
         let headers = {}
-        if(auth_toke != undefined)
+        if(auth_token != undefined)
         {
             headers['Authorization'] = `Bearer ${auth_token}`
         }
@@ -76,9 +76,9 @@ const AppDetails = () => {
     {
         const url = `${backend_base_url}/delete-application?package_id=${id}`
 
-        let auth_toke = get_auth_token()
+        let auth_token = get_auth_token()
         let headers = {}
-        if(auth_toke != undefined)
+        if(auth_token != undefined)
         {
             headers['Authorization'] = `Bearer ${auth_token}`
         }
@@ -109,9 +109,9 @@ const AppDetails = () => {
             "description":latest_text
         }
 
-        let auth_toke = get_auth_token()
+        let auth_token = get_auth_token()
         let headers = {'Content-Type': 'application/json'}
-        if(auth_toke != undefined)
+        if(auth_token != undefined)
         {
             headers['Authorization'] = `Bearer ${auth_token}`
         }

@@ -12,12 +12,12 @@ export default function Index() {
   function fetch_recent_apps()
   {
 
-    let auth_toke = get_auth_token()
-        let headers = {}
-        if(auth_toke != undefined)
-        {
-            headers['Authorization'] = `Bearer ${auth_token}`
-        }
+    let auth_token = get_auth_token()
+    let headers = {}
+    if(auth_token != undefined)
+    {
+        headers['Authorization'] = `Bearer ${auth_token}`
+    }
     
     const response = fetch(`${backend_base_url}/get-recent-application?limit=15`,{
       headers:headers
