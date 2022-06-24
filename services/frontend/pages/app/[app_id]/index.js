@@ -21,7 +21,7 @@ const AppDetails = () => {
 
     function fetch_app_details(app_id)
     {
-    const response = await fetch(`${backend_base_url}/get-application-details?package_id=${app_id}`,{
+    const response = fetch(`${backend_base_url}/get-application-details?package_id=${app_id}`,{
         headers:{
             'Authorization':`Bearer ${get_auth_token()}`
         }
@@ -32,7 +32,7 @@ const AppDetails = () => {
         return
     }
 
-    const data = await response.json()
+    const data = response.json()
 
     return data["data"]
     
