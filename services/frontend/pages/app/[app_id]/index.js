@@ -114,7 +114,7 @@ const AppDetails = ({data}) => {
                                 <Paper elevation={1}>
                                     <ListItem
                                     secondaryAction={
-                                        <IconButton href={`${backend_base_url}/media/${item.package_id}/${item._id}`} disabled={item.status == "active" ? false : true}>
+                                        <IconButton href={`${backend_base_url}/media/${item.package_id}/${item.version_unique_id}`} disabled={item.status == "active" ? false : true}>
                                             <DownloadIcon/>
                                         </IconButton>
                                     }
