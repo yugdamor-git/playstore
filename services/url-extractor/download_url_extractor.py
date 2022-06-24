@@ -27,8 +27,10 @@ class DownloadUrlExtractor:
     def main(self):
         
         pending_apps = list(self.db.application.find({"status":"pending"}))
+        
         self.wd.start()
         for app in pending_apps:
+            print(app)
             self.current_id = app["_id"]
             url = app["package_url"] + "/download?from=details"
             self.wd.page.on("response",self.handle_response)
