@@ -28,7 +28,7 @@ class DownloadUrlExtractor:
         url = route.request.url
         
         if "https://m.apkpure.com" in url or "https://apkpure.com" in url:
-            return route._continue()
+            return route.continue_()
         else:
             return route.abort()
     
