@@ -2,6 +2,7 @@ import { Add } from '@mui/icons-material'
 import { Avatar, Box, Divider, IconButton, Link, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Snackbar, Stack, TextField } from '@mui/material'
 import React, { useState } from 'react'
 import { backend_base_url } from '../src/config'
+import { get_auth_token } from '../src/helper'
 
 const Search = () => {
 
@@ -42,10 +43,16 @@ const Search = () => {
         const response = await fetch(url,{
             method:'POST',
             headers: {
-                        'Content-Type': 'application/json'
+                        'Content-Type': 'application/json',
+                        'Authorization':`Bearer ${get_auth_token()}`
                     },
             body:JSON.stringify({"data":item})
         });
+
+        if (response.status != 200)
+        {
+            return
+        }
         const json_data = await response.json()
         
         console.log(json_data)

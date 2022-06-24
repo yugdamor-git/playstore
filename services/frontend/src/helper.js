@@ -18,13 +18,13 @@ export function get_auth_token()
     return auth_token
 }
 
-export async function is_user_logged_in()
-{
-    const token = get_auth_token()
-    if (auth_token == null || auth_token == undefined)
-    {
-        return null
-    }
+// export async function is_user_logged_in()
+// {
+//     const token = get_auth_token()
+//     if (auth_token == null || auth_token == undefined)
+//     {
+//         return null
+//     }
 
-    return token
-}
+//     return token
+// }

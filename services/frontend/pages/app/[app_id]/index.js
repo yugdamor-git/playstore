@@ -5,7 +5,8 @@ import DownloadIcon from '@mui/icons-material/Download';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { backend_base_url } from '../../../src/config';
 import { useRouter } from 'next/router'
-const AppDetails = ({data}) => {
+import { get_auth_token } from '../../../src/helper';
+const AppDetails = () => {
 
     const [snackbar,setSnackbar] = useState(
         {
@@ -15,6 +16,29 @@ const AppDetails = ({data}) => {
     )
 
     const router = useRouter()
+
+    const app_id = router.app_id
+
+    function fetch_app_details(app_id)
+    {
+    const response = await fetch(`${backend_base_url}/get-application-details?package_id=${app_id}`,{
+        headers:{
+            'Authorization':`Bearer ${get_auth_token()}`
+        }
+    })
+
+    if (response.status != 200)
+    {
+        return
+    }
+
+    const data = await response.json()
+
+    return data["data"]
+    
+    }
+
+    let data = fetch_app_details(app_id)
 
     const [descriptionText,setDescriptionText] = useState(data.description)
 
@@ -140,19 +164,3 @@ const AppDetails = ({data}) => {
 }
 
 export default AppDetails
-
-
-
-export async function getServerSideProps(context) {
-    
-    const id = context.params.app_id
-
-    const response = await fetch(`${backend_base_url}/get-application-details?package_id=${id}`)
-    const data = await response.json()
-    
-    return {
-      props: {
-        data:data["data"]
-      }, // will be passed to the page component as props
-    }
-  }

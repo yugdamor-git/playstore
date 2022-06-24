@@ -2,6 +2,7 @@ import { Avatar, Badge, Box, Button, colors, Grid, Link, Paper, Stack, TextField
 import { color } from '@mui/system'
 import React, { useState } from 'react'
 import { backend_base_url } from '../src/config'
+import { get_auth_token } from '../src/helper'
 
 const MyApps = ({data}) => {
 
@@ -16,11 +17,18 @@ const MyApps = ({data}) => {
             backend_base_url
             const url = `${backend_base_url}/search-applications?limit=20&keyword=${keyword}`
 
-            const response = await fetch(url)
-    
-            const json_data = await response.json()
+            const response = await fetch(url,{
+                headers:{
+                    'Authorization':`Bearer ${get_auth_token()}`
+                }
+            })
+            
+            if (response.status == 200)
+            {
+                const json_data = await response.json()
 
-            setApps(json_data.data)
+                setApps(json_data.data)
+            }
         }
         else
         {
