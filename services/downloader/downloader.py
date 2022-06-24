@@ -28,7 +28,7 @@ class Downloader:
     
     def process_pending_applications(self):
         
-        pending_applications = list(self.db.application.find({"status":"pending"}))
+        pending_applications = list(self.db.application.find({"status":"download"}))
         
         for application in pending_applications:
             print(application)
