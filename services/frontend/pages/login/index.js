@@ -19,7 +19,7 @@ const Login = () => {
     const [username,setUsername] = useState('')
     const [password,setPassword] = useState('')
 
-    async function login(username,password)
+    async function login_request(username,password)
     {
         if (username == '')
         {
@@ -76,7 +76,7 @@ const Login = () => {
             <Typography textAlign='center' fontWeight={600} fontSize={30}  >Login</Typography>
             <TextField value={username} onChange={(e=>setUsername(e.target.value))} label='Username'/>
             <TextField value={password} onChange={(e=>setPassword(e.target.value))} type="password" label='Password'/>
-            <Button onClick={async()=>login(username,password)} variant='outlined' startIcon={<LoginOutlined/>}>
+            <Button onClick={async() => login_request(username,password)} variant='outlined' startIcon={<LoginOutlined/>}>
                 Sign In
             </Button>
         </Stack>
