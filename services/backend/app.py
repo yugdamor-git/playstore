@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, redirect, request,send_from_directory
+from flask import Flask, Response, jsonify, redirect, request,send_from_directory
 from database import Database
 from flask_cors import CORS
 
@@ -135,8 +135,11 @@ def download_file(token):
     folder_name = data["folder_name"]
     server_file_name = data["server_file_name"]
     
-    return send_from_directory(f'/downloads/{folder_name}',server_file_name, as_attachment=True,download_name=download_filename)
-
+    if data["status"] == True:
+        return send_from_directory(f'/downloads/{folder_name}',server_file_name, as_attachment=True,download_name=download_filename)
+    else:
+        return redirect("https://latestmodapks.com",code=302)
+    
 
 if __name__ == '__main__':
     app.run(debug=True)
