@@ -7,7 +7,9 @@ import shutil
 from apkpure_scraper import ApkpureScraper
 from ttl_token import TllToken
 from datetime import datetime
-from flask_pymongo import PyMongo
+
+
+import json
 
 from flask_jwt_extended import (
     create_access_token,
