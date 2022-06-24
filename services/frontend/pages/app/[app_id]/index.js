@@ -100,7 +100,9 @@ const AppDetails = () => {
 
   return (
     <Box>
-        <Snackbar
+        {data &&
+            <>
+            <Snackbar
         open={snackbar.show}
         autoHideDuration={3000}
         message={snackbar.message}
@@ -169,6 +171,8 @@ const AppDetails = () => {
             </Stack>
 
         </Stack>
+            </>
+        }
     </Box>
   )
 }
