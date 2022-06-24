@@ -75,15 +75,15 @@ export async function getServerSideProps(context) {
         headers:headers
       })
 
-      if(response.status == 401)
-      {
-        return {
-            redirect: {
-              permanent: false,
-              destination: "/login"
-            }
-      }
-    }
+    //   if(response.status == 401)
+    //   {
+    //     return {
+    //         redirect: {
+    //           permanent: false,
+    //           destination: "/login"
+    //         }
+    //   }
+    // }
 
     const data = await response.json()
 
