@@ -3,26 +3,34 @@ import Box from '@mui/material/Box';
 import Search from '../components/search';
 import MyApps from '../components/recent_apps';
 import { backend_base_url, backend__internal_base_url } from '../src/config';
+import { get_auth_token } from '../src/helper';
 
-export default function Index({recent_apps}) {
+export default function Index() {
+  
+  function fetch_recent_apps()
+  {
+    const response = fetch(`${backend__internal_base_url}/get-recent-application?limit=15`,{
+      headers:{
+        'Authorization':`Bearer ${get_auth_token()}`
+      }
+    })
+
+    if (response.status != 200)
+    {
+      return
+    }
+
+    const data = response.json()
+    return data["data"]
+  }
+  
+
+  const recent_apps = fetch_recent_apps()
+
   return (
     <Box>
      <Search/>
      <MyApps data={recent_apps} />
     </Box>
   );
-}
-
-
-export async function getServerSideProps(context) {
-  
-  
-  const response = await fetch(`${backend__internal_base_url}/get-recent-application?limit=15`)
-  const data = await response.json()
-  
-  return {
-    props: {
-      recent_apps:data["data"]
-    }, // will be passed to the page component as props
-  }
 }
