@@ -129,7 +129,7 @@ class ApkpureScraper:
     
     def download_apk(self,url,timeout):
         print(f'downloading : {url}')
-        # error_message = "no error"
+        error_message = "no error"
         # soup = None
         # for i in range(0,self.max_retry):
         #     try:
@@ -149,6 +149,7 @@ class ApkpureScraper:
         #     return False,None,None,error_message
 
         # download_link = soup.find("a",{"id":"download_link"}).get("href")
+        # error_message =""
         download_link = url
         print(f'download link : {download_link}')
         file_bytes = None
