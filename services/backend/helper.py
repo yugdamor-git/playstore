@@ -2,6 +2,7 @@
 import hashlib
 from dateutil import parser
 from datetime import datetime
+import requests
 
 def string_to_datetime(text):
     try:
@@ -27,3 +28,19 @@ def generate_file_id(package_name,version,version_code,published_on):
     id = generate_sha1_hex(tmp)
     
     return tmp,id
+
+def download_image(url):
+    for i in range(0,5):
+        response = requests.get(url)
+        if response.status_code == 200:
+            return response.content
+    return None
+
+def save_image(folder_path,file_path,content):
+    if not folder_path.exists():
+        folder_path.mkdir()
+    
+    if not file_path.exists():
+        with open(file_path,"wb") as f:
+            f.write(content)
+    

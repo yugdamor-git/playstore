@@ -32,6 +32,8 @@ def get_suggestion():
 
 # add application in database
 
+
+
 @app.route('/add-application',methods=["POST"])
 def add_application():
     data = request.json["data"]
@@ -45,6 +47,10 @@ def add_application():
             "_id":id
         }
     })
+
+@app.route('/icon/<id>',methods=["GET"])
+def fetch_icon(id):
+    return send_from_directory(f'/downloads/{id}',"icon.png")
 
 @app.route('/search-applications',methods=["GET"])
 def search_applications():

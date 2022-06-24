@@ -4,7 +4,7 @@ import pymongo
 import os
 import shutil
 
-from helper import generate_sha1_hex,get_current_timestamp
+from helper import generate_sha1_hex,get_current_timestamp,save_image,download_image
 
 user = os.environ.get("MONGO_USERNAME") 
 password = os.environ.get("MONGO_PASSWORD")
@@ -64,8 +64,15 @@ class Database:
         data["status"] = "scraping"
         data["error_count"] = 0
         
-        self.application.insert_one(data)
+        url = data["icon_url"]
         
+        content = download_image(url)
+        if content != None:
+            folder = self.downloads.joinpath(id)
+            filename = folder.joinpath("icon.png")
+            save_image(folder,filename,content)
+        
+        self.application.insert_one(data)
         return True,id,"application added into database."
     
     def delete_application(self,package_id):

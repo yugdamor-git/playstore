@@ -47,7 +47,7 @@ const MyApps = ({data}) => {
                         <Link sx={{textDecoration:'none'}}  href={`/app/${item._id}`} >
                         <Stack direction='column' spacing={1} alignItems='center' justifyContent='center' >
                         <Badge color={item.status == "active" ? "success" : "error"}  badgeContent={item.status}>
-                        <Avatar variant="rounded" marginTop={1} marginBottom={1} sx={{ width: 76, height: 76 }} src={item.icon_url}/>
+                        <Avatar variant="rounded" marginTop={1} marginBottom={1} sx={{ width: 76, height: 76 }} src={`${backend_base_url}/icon/${item._id}`}/>
                         </Badge>
                         <Typography color={colors.grey[600]} width={{xs:'5rem',sm:'7rem',md:'8rem'}} noWrap marginTop={1} fontSize={11} textAlign='center'>{item.title}</Typography>
                         </Stack>

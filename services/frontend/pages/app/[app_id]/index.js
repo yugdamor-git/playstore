@@ -70,7 +70,7 @@ const AppDetails = ({data}) => {
         />
         <Stack direction={'column'}>
             <Stack alignItems='center'  direction={'row'}>
-                <Avatar variant='rounded' sx={{ width: 85, height: 85 }} src={data.icon_url}/>
+                <Avatar variant='rounded' sx={{ width: 85, height: 85 }} src={`${backend_base_url}/icon/${data._id}`}/>
                 <Stack marginX={{xs:4}}>
                 <Typography fontSize={20} color={colors.grey[700]} fontWeight={600}>{data.title}</Typography>
                 <Typography>{data.package_name}</Typography>
