@@ -26,7 +26,7 @@ class DownloadUrlExtractor:
     
     def main(self):
         
-        pending_apps = list(self.db.application.find({"status":"pending"}))
+        pending_apps = list(self.db.application.find({"status":"download-page-url"}))
         self.wd.start()
         for app in pending_apps:
             self.current_id = app["_id"]

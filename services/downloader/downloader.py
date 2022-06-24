@@ -43,14 +43,15 @@ class Downloader:
                 self.db.update_application(package_id,{"error_count":application["error_count"] + 1})
                 continue
             
-            data["status"] = "active"
+            data["status"] = "download-page-url"
             
             package_name = application["package_name"]
             version = data["version"]
             version_code = data["version_code"]
             published_on = data["published_on_text"]
             download_page_url = data["download_page_url"]
-            
+            self.db.update_application(package_id,data)
+            continue
             filename,file_id = generate_file_id(package_name,version,version_code,published_on)
             time_out = calc_timeout(data["size_bytes"])
             status,file_bytes,download_url,error_message = self.scraper.download_apk(download_page_url,time_out)
