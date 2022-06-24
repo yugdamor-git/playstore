@@ -6,11 +6,50 @@ from pathlib import Path
 import shutil
 from apkpure_scraper import ApkpureScraper
 from ttl_token import TllToken
+from datetime import datetime
+from flask_pymongo import PyMongo
 
+from flask_jwt_extended import (
+    create_access_token,
+    create_refresh_token,
+    jwt_required,
+    get_jwt_identity,
+    get_jwt,
+    JWTManager,
+)
+
+from bson.objectid import ObjectId
+from flask_bcrypt import Bcrypt
+
+class JSONEncoder(json.JSONEncoder):
+    ''' extend json-encoder class'''
+
+    def default(self, o):
+        if isinstance(o, ObjectId):
+            return str(o)
+        if isinstance(o, set):
+            return list(o)
+        if isinstance(o, datetime.datetime):
+            return str(o)
+        return json.JSONEncoder.default(self, o)
 
 app = Flask(__name__)
 
 CORS(app)
+
+app.config["JWT_SECRET_KEY"] = "3bc27a33-ac7d-4f15-be44-2748de7c9d57"
+
+app.config['JWT_ACCESS_TOKEN_EXPIRES'] = datetime.timedelta(days=365*100)
+
+jwt = JWTManager(app)
+
+flask_bcrypt = Bcrypt(app)
+app.json_encoder = JSONEncoder
+
+
+@jwt.unauthorized_loader
+def unauthorized_response(callback):
+    return redirect("/login",302)
 
 db = Database()
 
@@ -18,7 +57,73 @@ token_generator = TllToken()
 
 scraper = ApkpureScraper()
 
+
+@app.route('/auth', methods=['POST'])
+def auth_user():
+    ''' auth endpoint '''
+    
+    data = request.get_json()["data"]
+    
+    user = list(db.users.find({'email': data['email']}))
+    
+    if len(user) == 0:
+        return jsonify({
+            "status":False,
+            "message":"the email address is invalid.",
+            "data":None
+        })
+    
+    
+    pwd = user[0].get("password")
+    
+    if user and flask_bcrypt.check_password_hash(pwd, data['password']):
+        del user['password']
+        del data['password']
+        access_token = create_access_token(identity=data)
+        refresh_token = create_refresh_token(identity=data)
+        user['token'] = access_token
+        user['refresh'] = refresh_token
+        return jsonify({'status': True, 'data': user}), 200
+    else:
+        return jsonify({'status': False, 'message': 'invalid password'}), 200
+    
+@app.route('/refresh', methods=['POST'])
+@jwt_required()
+def refresh():
+    ''' refresh token endpoint '''
+    current_user = get_jwt_identity()
+    ret = {
+        'token': create_access_token(identity=current_user)
+    }
+    return jsonify({'ok': True, 'data': ret}), 200
+
+
+@app.route('/register', methods=['POST'])
+#@jwt_required()
+def register():
+    ''' register user endpoint '''
+    
+    data = request.get_json()["data"]
+    
+    user = list(db.users.find({'email': data['email']}))
+    
+    if len(user) != 0:
+        return jsonify({
+            "status":False,
+            "message":"user already exists.",
+            "data":None
+        })
+    
+   
+    data['password'] = flask_bcrypt.generate_password_hash(data['password'])
+    
+    db.users.insert_one(data)
+    
+    return jsonify({'status': True, 'msg': 'User created successfully!'}), 200
+
+
 # to get search suggestion from keyword
+@jwt_required()
 @app.route('/get-suggestion')
 def get_suggestion():
     keyword = request.args.get("q")
@@ -35,6 +140,7 @@ def get_suggestion():
 
 
 @app.route('/add-application',methods=["POST"])
+@jwt_required()
 def add_application():
     data = request.json["data"]
     
@@ -52,6 +158,7 @@ def add_application():
 def fetch_icon(id):
     return send_from_directory(f'/downloads/{id}',"icon.png")
 
+@jwt_required()
 @app.route('/search-applications',methods=["GET"])
 def search_applications():
     default_limit = 20
@@ -69,6 +176,7 @@ def search_applications():
         "data":data
     })
 
+@jwt_required()
 @app.route('/delete-application',methods=["GET"])
 def delete_application():
     package_id = request.args.get("package_id")
@@ -80,6 +188,7 @@ def delete_application():
         "message":message
     })
 
+@jwt_required()
 @app.route('/update-application',methods=["POST"])
 def update_application():
     package_id = request.args.get("package_id")
@@ -92,7 +201,8 @@ def update_application():
         "status":True,
         "message":"data updated"
     }),200
-    
+
+@jwt_required()
 @app.route('/get-recent-application',methods=["GET"])
 def get_recent_application():
     default_limit = 20
@@ -109,6 +219,7 @@ def get_recent_application():
         "data":recent_application
     }),200
 
+@jwt_required()
 @app.route('/get-application-details',methods=["GET"])
 def get_application_details():
     package_id = request.args.get("package_id")
@@ -131,6 +242,7 @@ def get_application_details():
         "status":status,
         "data":app_details
     }),200
+
 
 @app.route('/download/<token>')
 def download_file(token):

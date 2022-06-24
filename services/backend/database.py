@@ -26,6 +26,8 @@ class Database:
         
         self.files = db["files"]
         
+        self.users = db["users"]
+        
         self.downloads = Path('/downloads')
     
     def _get_application_by_package(self,package_name):
