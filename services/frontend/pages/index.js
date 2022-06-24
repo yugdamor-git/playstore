@@ -35,7 +35,7 @@ export default function Index() {
   let [recentApps,setRecentApps] = React.useState(null)
 
 
-  useEffect(() => {
+  React.useEffect(() => {
     let recent_apps = fetch_recent_apps()
     setRecentApps(recent_apps)
   },[])
