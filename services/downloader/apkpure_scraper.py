@@ -126,7 +126,7 @@ class ApkpureScraper:
         
         return True,data
     
-    def download_apk(self,url):
+    def download_apk(self,url,timeout):
         print(f'downloading : {url}')
         error_message = "no error"
         soup = None
@@ -153,7 +153,7 @@ class ApkpureScraper:
         
         for i in range(0,self.max_retry):
             try:
-                response = self.wd.get(download_link)
+                response = self.wd.get(download_link,timeout=timeout)
                 print(response.status_code)
                 if response.status_code == 200:
                     file_bytes = response.content

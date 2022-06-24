@@ -27,3 +27,13 @@ def generate_file_id(package_name,version,version_code,published_on):
     id = generate_sha1_hex(tmp)
     
     return tmp,id
+
+def calc_timeout(size):
+    timeout = 30
+    
+    try:
+        s = int(size)
+        timeout = int(s/1024/1024)
+    except:
+        pass
+    return timeout

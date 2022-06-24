@@ -1,7 +1,7 @@
 from pathlib import Path
 from apkpure_scraper import ApkpureScraper
 from database import Database
-from helper import generate_file_id
+from helper import generate_file_id,calc_timeout
 
 
 class Downloader:
@@ -52,8 +52,8 @@ class Downloader:
             download_page_url = data["download_page_url"]
             
             filename,file_id = generate_file_id(package_name,version,version_code,published_on)
-            
-            status,file_bytes,download_url,error_message = self.scraper.download_apk(download_page_url)
+            time_out = calc_timeout(data["size_bytes"])
+            status,file_bytes,download_url,error_message = self.scraper.download_apk(download_page_url,time_out)
             print(download_url)
             print(error_message)
             if status == True:
