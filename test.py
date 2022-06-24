@@ -9,6 +9,8 @@ def handle(response):
     url = response.url
     if "https://download.apkpure.com" in url:
         print(response.headers["location"])
+        
+driver.page.on("response",handle)
 
 driver.page.goto(url)
 
