@@ -38,6 +38,9 @@ const Login = () => {
             'password':password
         }
         const response = await fetch(url,{
+            headers:{
+                'Content-Type': 'application/json'
+            },
             method:'POST',
             body:JSON.stringify({'data':data})
         })
