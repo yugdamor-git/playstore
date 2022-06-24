@@ -6,7 +6,7 @@ class TllToken:
         self.secret_key = os.environ.get("SECRET_KEY")
         self.salt = "apk.file.download"
         self.time_to_live = 1 * 60
-        self.s = URLSafeTimedSerializer(self.secret_key,salt=self.salt.encode("utf-8"),max_age=self.time_to_live)
+        self.s = URLSafeTimedSerializer(self.secret_key,salt=self.salt.encode("utf-8"),expires_in=self.time_to_live)
     
     def generate_ttl_token(self,data):
         token = self.s.dumps(data,)
