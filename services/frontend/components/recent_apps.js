@@ -31,13 +31,15 @@ const MyApps = ({data}) => {
                 headers:headers
             })
             
-            if (response.status == 401)
+            const json_data = await response.json()
+
+            if (response.auth == False)
             {
                 router?.push("/login")
             }
 
 
-            const json_data = await response.json()
+            
 
             setApps(json_data.data)
         }

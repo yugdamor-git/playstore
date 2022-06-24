@@ -53,13 +53,15 @@ app.json_encoder = JSONEncoder
 
 @jwt.unauthorized_loader
 def unauthorized_response(callback):
-    return jsonify({}),401
+    return jsonify({"auth":False}),401
 
 db = Database()
 
 token_generator = TllToken()
 
 scraper = ApkpureScraper()
+
+
 
 
 @app.route('/auth', methods=['POST'])

@@ -74,23 +74,18 @@ export async function getServerSideProps(context) {
       const response = await fetch(`${backend_base_url}/get-recent-application?limit=15`,{
         headers:headers
       })
+      
+      const data = await response.json()
 
-    //   if(response.status == 401)
-    //   {
-    //     return {
-    //         redirect: {
-    //           permanent: false,
-    //           destination: "/login"
-    //         }
-    //   }
-    // }
-
-    const data = await response.json()
-
-
-
-
-
+      if(response.auth == False)
+      {
+        return {
+            redirect: {
+              permanent: false,
+              destination: "/login"
+            }
+      }
+    }
 
     return {
       props: {
