@@ -45,8 +45,8 @@ export default function Index() {
   return (
     <Box>
      <Search/>
-     {recent_apps &&
-      <MyApps data={recent_apps} />
+     {recentApps &&
+      <MyApps data={recentApps} />
      }
      
     </Box>
