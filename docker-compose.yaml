@@ -55,6 +55,14 @@ services:
 
     env_file: .env
 
+  version-checker:
+    build: ./services/version-checker/
+
+    restart: always
+
+    env_file: .env
+
+
   tor-proxy:
     image: dperson/torproxy
     restart: always
