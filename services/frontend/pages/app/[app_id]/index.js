@@ -4,7 +4,7 @@ import React, { useState } from 'react'
 import DownloadIcon from '@mui/icons-material/Download';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { backend_base_url } from '../../../src/config';
-
+import { useRouter } from 'next/router'
 const AppDetails = ({data}) => {
 
     const [snackbar,setSnackbar] = useState(
@@ -13,6 +13,8 @@ const AppDetails = ({data}) => {
             message:""
         }
     )
+
+    const router = useRouter()
 
     const [descriptionText,setDescriptionText] = useState(data.description)
 
@@ -30,6 +32,8 @@ const AppDetails = ({data}) => {
             show:true,
             message:json_data.message
         })
+
+        router.push("/")
 
     }
 
