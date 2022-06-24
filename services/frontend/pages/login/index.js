@@ -76,7 +76,7 @@ const Login = () => {
             <Typography textAlign='center' fontWeight={600} fontSize={30}  >Login</Typography>
             <TextField value={username} onChange={(e=>setUsername(e.target.value))} label='Username'/>
             <TextField value={password} onChange={(e=>setPassword(e.target.value))} type="password" label='Password'/>
-            <Button onClick={()=>login(username,password)} variant='outlined' startIcon={<LoginOutlined/>}>
+            <Button onClick={async()=>login(username,password)} variant='outlined' startIcon={<LoginOutlined/>}>
                 Sign In
             </Button>
         </Stack>
