@@ -5,6 +5,7 @@ from flask_cors import CORS
 from pathlib import Path
 import shutil
 from apkpure_scraper import ApkpureScraper
+from ttl_token import TllToken
 
 
 app = Flask(__name__)
@@ -12,6 +13,8 @@ app = Flask(__name__)
 CORS(app)
 
 db = Database()
+
+token_generator = TllToken()
 
 scraper = ApkpureScraper()
 
@@ -106,21 +109,33 @@ def get_application_details():
     
     status,app_details = db.get_application_details(package_id)
     
+    for file in app_details["files"]:
+        data = {
+            "download_filename":file["filename"] + ".apk",
+            "folder_name":package_id,
+            "server_file_name":file["version_unique_id"] + ".apk"
+        }
+        
+        token = token_generator.generate_ttl_token(data)
+        
+        file["download_token"] = token
+    
+    
     return jsonify({
         "status":status,
         "data":app_details
     }),200
 
-@app.route('/media/<folderName>/<fileName>')
-def download_file(folderName,fileName):
-    apk_data = list(db.files.find({"version_unique_id":fileName}))[0]
+@app.route('/download/<token>')
+def download_file(token):
     
-    download_name = apk_data["filename"] + ".apk"
+    data = token_generator.decode_ttl_token(token)
     
-    file_name = f'{fileName}.apk'
+    download_filename = data["download_filename"]
+    folder_name = data["folder_name"]
+    server_file_name = data["server_file_name"]
     
-    return send_from_directory(f'/downloads/{folderName}',file_name, as_attachment=True,download_name=download_name)
-
+    return send_from_directory(f'/downloads/{folder_name}',server_file_name, as_attachment=True,download_name=download_filename)
 
 
 if __name__ == '__main__':

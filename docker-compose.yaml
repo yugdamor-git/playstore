@@ -61,11 +61,3 @@ services:
     restart: always
 
     env_file: .env
-
-
-  tor-proxy:
-    image: dperson/torproxy
-    restart: always
-    ports:
-        - "8117:8118"
-        - "9050:9050"
