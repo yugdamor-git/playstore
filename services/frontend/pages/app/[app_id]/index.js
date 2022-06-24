@@ -17,7 +17,7 @@ const AppDetails = () => {
 
     const router = useRouter()
 
-    const app_id = router.query.app_id
+    const app_id = router?.query.app_id
 
     function fetch_app_details(app_id)
     {
