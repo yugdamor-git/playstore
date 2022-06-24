@@ -79,7 +79,7 @@ class ApkpureScraper:
         data = {}
         
         for i in range(0,self.max_retry):
-            response = self.wd.get(url)
+            response = self.wd.get(url,proxies=self.proxy)
             if response.status_code == 200:
                 soup = BeautifulSoup(response.text)
                 break
