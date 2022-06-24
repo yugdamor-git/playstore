@@ -10,7 +10,7 @@ class TllToken:
     
     def generate_ttl_token(self,data):
         timestamp = datetime.now()
-        data["timestamp"] = timestamp.timestamp
+        data["timestamp"] = timestamp.timestamp()
         token = self.s.dumps(data,)
         return token
 
