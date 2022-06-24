@@ -6,7 +6,7 @@ flask-cors
 python-dateutil
 gunicorn
 cloudscraper
-flask-jwt-extended
+flask-jwt-extended==3.21.0
 Flask-PyMongo
 Flask-Bcrypt
 requests
