@@ -65,7 +65,7 @@ export async function getServerSideProps(context) {
     const cookies = context.req.headers.cookie;
 
     const auth_token = cookies["auth_token"]
-
+    let headers = {}
     if(auth_token != undefined)
       {
           headers['Authorization'] = `Bearer ${auth_token}`
