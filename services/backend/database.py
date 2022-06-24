@@ -61,7 +61,7 @@ class Database:
         data["_id"] = id
         data["created_at"] = get_current_timestamp()
         data["updated_at"] = get_current_timestamp()
-        data["status"] = "pending"
+        data["status"] = "processing"
         data["error_count"] = 0
         
         self.application.insert_one(data)

@@ -18,7 +18,7 @@ class DownloadUrlExtractor:
                 {"_id":self.current_id},
                 {
                     "$set":{
-                        "status":"download",
+                        "status":"scraped",
                         "app_download_url":download_url
                     }
                 }
@@ -35,7 +35,7 @@ class DownloadUrlExtractor:
     
     def main(self):
         
-        pending_apps = list(self.db.application.find({"status":"pending","error_count":{"$lt":10}}))
+        pending_apps = list(self.db.application.find({"status":"processing","error_count":{"$lt":10}}))
         
         self.wd.start()
         
