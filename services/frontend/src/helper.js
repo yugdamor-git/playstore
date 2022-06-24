@@ -1,12 +1,12 @@
 import { setCookies,getCookie, removeCookies } from 'cookies-next';
 
-export function Login(token)
+export function set_auth_token(token)
 {
     setCookies('auth_token',token)
 
 }
 
-export function Logout()
+export function remove_auth_cookie()
 {
     removeCookies('auth_token')
 }

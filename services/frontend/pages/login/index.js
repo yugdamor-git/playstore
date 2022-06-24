@@ -3,6 +3,7 @@ import { Button, Snackbar, Stack, TextField, Typography } from '@mui/material'
 import { useRouter } from 'next/router'
 import React, { useState } from 'react'
 import { backend_base_url } from '../../src/config'
+import { set_auth_token } from '../../src/helper'
 
 const Login = () => {
 
@@ -33,7 +34,7 @@ const Login = () => {
         }
         const url = `${backend_base_url}/auth`
         data = {
-            'username':username,
+            'email':username,
             'password':password
         }
         const response = await fetch(url,{
@@ -43,12 +44,13 @@ const Login = () => {
 
         const json_data = await response.json()
 
-        if (json_data.ok == false)
+        if (json_data.status == false)
         {
             setSnackbar({show:true,message:json_data.message})
         }
         else{
             const auth_token = json_data["data"]["token"]
+            set_auth_token(auth_token)
             router.push('/')
 
         }

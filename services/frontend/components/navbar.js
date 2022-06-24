@@ -4,10 +4,16 @@ import AndroidIcon from '@mui/icons-material/Android';
 
 import {useRouter} from 'next/router'
 import { Logout } from '@mui/icons-material';
+import { remove_auth_cookie } from '../src/helper';
 
 const Navbar = () => {
+    const router = useRouter()
+    function logout()
+    {
+        remove_auth_cookie()
+        router.push("/login")
 
-  const router = useRouter()
+    }
   return (
     <Box sx={{ flexGrow: 1 }} marginBottom={3}>
         <AppBar elevation={1} position='static' color='primary'>
