@@ -92,16 +92,7 @@ export async function getServerSideProps(context) {
     
     const auth_token = cookies["auth_token"]
 
-    if(auth_token == null)
-    {
-        return {
-            redirect: {
-              permanent: false,
-              destination: "/login"
-            }
-      }
-    }
-    else
+    if(auth_token != null)
     {
         return {
             redirect: {
