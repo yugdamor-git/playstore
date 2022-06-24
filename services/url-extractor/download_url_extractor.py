@@ -10,6 +10,7 @@ class DownloadUrlExtractor:
     
     def handle_response(self,response):
         url = response.url
+        print(url)
         if "https://download.apkpure.com" in url:
             download_url = response.headers["location"]
             print(download_url)
@@ -35,6 +36,7 @@ class DownloadUrlExtractor:
             url = app["package_url"] + "/download?from=details"
             self.wd.page.on("response",self.handle_response)
             self.wd.page.goto(url)
+            
         self.wd.stop()
         
 
