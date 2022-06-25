@@ -149,7 +149,7 @@ class Database:
         data["file_size"] = file["size_text"]
         data["version_number"] = file["version"]
         
-        data["last_updated"] = file["published_on_timestamp"].strftime("%B %D,%Y").title()
+        data["last_updated"] = file["published_on_timestamp"].strftime("%B %d,%Y").title()
         
         tmp_data = {
             "download_filename":file["filename"] + ".apk",
