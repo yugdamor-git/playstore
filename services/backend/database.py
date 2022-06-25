@@ -129,6 +129,8 @@ class Database:
             tmp["data"] = data
             return tmp
         
+        tmp["app_status"] = True
+        
         app = apps[0]
         
         data["app_name"] = app["title"]
@@ -140,11 +142,14 @@ class Database:
         if len(files) == 0:
             tmp["version_status"] = False
             return tmp
-
+        tmp["version_status"] = True
+        
         file = files[0]
         
         data["file_size"] = file["size_text"]
         data["version_number"] = file["version"]
+        
+        data["last_updated"] = file["published_on_timestamp"].strftime("%B %D,%Y").title()
         
         tmp_data = {
             "download_filename":file["filename"] + ".apk",
