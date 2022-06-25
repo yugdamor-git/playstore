@@ -117,6 +117,55 @@ class Database:
                 "$set":data
             }
         )
+        
+    def get_latest_app(self,package_name,token_generator):
+        data = {}
+        tmp = {}
+        data["package_name"] = package_name
+        apps = list(self.application.find({"package_name":package_name,"status":"active"}))
+        
+        if len(apps) == 0:
+            tmp["app_status"] = False
+            tmp["data"] = data
+            return tmp
+        
+        app = apps[0]
+        
+        data["app_name"] = app["title"]
+        data["mode_type"] = "no"
+        data["file_type"] = "apk"
+        
+        files = list(self.files.find({"package_id":app["_id"]}).sort("published_on_timestamp",pymongo.DESCENDING))
+        
+        if len(files) == 0:
+            tmp["version_status"] = False
+            return tmp
+
+        file = files[0]
+        
+        data["file_size"] = file["size_text"]
+        data["version_number"] = file["version"]
+        
+        tmp_data = {
+            "download_filename":file["filename"] + ".apk",
+            "folder_name":app["_id"],
+            "server_file_name":file["version_unique_id"] + ".apk"
+        }
+        
+        download_token = token_generator.generate_ttl_token(tmp_data)
+        
+        data["download_url"] = "http://148.251.41.232:6001/download/" + download_token
+        
+        tmp["data"] = data
+        
+        return tmp
+        
+        
+        
+        
+        
+            
+        
     
     def get_recent_application(self,limit):
         tmp = {}

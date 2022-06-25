@@ -214,6 +214,17 @@ def update_application():
         "message":"data updated"
     }),200
 
+@app.route('/app-latest',methods=["POST"])
+# @jwt_required()
+def app_latest():
+    data = request.get_json()["data"]
+    
+    package_name = data["package_name"]
+    
+    data = db.get_latest_app(package_name,token_generator)
+    
+    return jsonify(data),200
+
 
 @app.route('/get-recent-application',methods=["GET"])
 @jwt_required()
