@@ -134,8 +134,8 @@ class Database:
         app = apps[0]
         
         data["app_name"] = app["title"]
-        data["mode_type"] = "no"
-        data["file_type"] = "apk"
+        data["mode_type"] = "No"
+        data["file_type"] = "Apk"
         
         files = list(self.files.find({"package_id":app["_id"]}).sort("published_on_timestamp",pymongo.DESCENDING))
         
