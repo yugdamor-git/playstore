@@ -18,12 +18,14 @@ const Navbar = () => {
     <Box sx={{ flexGrow: 1 }} marginBottom={3}>
         <AppBar elevation={1} position='static' color='primary'>
             <Toolbar>
-                <IconButton onClick={()=>router.push("/")}>
+                <IconButton onClick={()=>router.push("/home")}>
                     <AndroidIcon color='white'/>
                 </IconButton>
-                <Typography sx={{ flexGrow: 1 }}>
-                    App Manager
-                </Typography>
+                <Box sx={{ flexGrow: 1 }}>
+                <Button onClick={()=>router.push("/home")} color="white"><Typography >
+                App Manager
+                </Typography></Button>
+                </Box>
                 {router.pathname != '/login'&&
 
                 <Box>

@@ -169,7 +169,6 @@ class Database:
         
         
         
-            
         
     
     def get_recent_application(self,limit):

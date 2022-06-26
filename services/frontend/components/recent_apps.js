@@ -32,20 +32,18 @@ const MyApps = ({data}) => {
             })
             
             const json_data = await response.json()
-
+            console.log(json_data)
             if (json_data.auth == false)
             {
                 router?.push("/login")
+                
             }
-
-
-            
-
+            // console.log(json_data.data)
             setApps(json_data.data)
         }
         else
         {
-            setApps(data)
+            setApps(data.apps)
         }
 
     }
