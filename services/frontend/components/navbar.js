@@ -4,7 +4,8 @@ import AndroidIcon from '@mui/icons-material/Android';
 
 import {useRouter} from 'next/router'
 import { Logout } from '@mui/icons-material';
-import { remove_auth_cookie } from '../src/helper';
+import { get_auth_token, remove_auth_cookie } from '../src/helper';
+import { token } from '../src/config';
 
 const Navbar = () => {
     const router = useRouter()
@@ -26,7 +27,7 @@ const Navbar = () => {
                 App Manager
                 </Typography></Button>
                 </Box>
-                {router.pathname != '/login'&&
+                {get_auth_token() != null &&
 
                 <Box>
                 <Button onClick={() => logout()} startIcon={<Logout/>} color='white'>
