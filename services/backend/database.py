@@ -29,6 +29,8 @@ class Database:
         self.users = db["users"]
         
         self.downloads = Path('/downloads')
+        
+        self.base_url = os.environ.get("DOMAIN_BASE_URL")
     
     def _get_application_by_package(self,package_name):
         
@@ -159,7 +161,7 @@ class Database:
         
         download_token = token_generator.generate_ttl_token(tmp_data)
         
-        data["download_url"] = "http://148.251.41.232:6001/download/" + download_token
+        data["download_url"] = f'{self.base_url}/api/download/' + download_token
         
         tmp["data"] = data
         
