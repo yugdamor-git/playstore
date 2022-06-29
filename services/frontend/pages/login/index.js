@@ -88,15 +88,6 @@ export default Login
 
 export async function getServerSideProps(context) {
 
-    const id = context.query.token
-
-    if (id == null || id != token)
-    {
-        return {
-            notFound: true,
-          }
-    }
-
     const cookies = context.req.cookies
     
     const auth_token = cookies["auth_token"]
@@ -109,6 +100,16 @@ export async function getServerSideProps(context) {
               destination: "/home"
             }
       }
+    }
+
+
+    const id = context.query.token
+
+    if (id == null || id != token)
+    {
+        return {
+            notFound: true,
+          }
     }
     else {
 
