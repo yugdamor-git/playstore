@@ -8,6 +8,7 @@ export default class MyDocument extends Document {
    return (
      <Html lang="en">
        <Head>
+       <title>App Manager</title>
        <link rel="icon" type="image/png" href="/google-play.png"/>
          <link
            rel="stylesheet"
