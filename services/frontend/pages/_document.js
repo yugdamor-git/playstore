@@ -10,6 +10,7 @@ export default class MyDocument extends Document {
        <Head>
        <title>App Manager</title>
        <link rel="icon" type="image/png" href="/google-play.png"/>
+       <meta name='robots' content='noindex,nofollow' />
          <link
            rel="stylesheet"
            href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
