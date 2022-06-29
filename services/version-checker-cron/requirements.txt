@@ -1,0 +1,8 @@
+flask
+bs4
+pymongo
+jsonschema
+flask-cors
+python-dateutil
+gunicorn
+cloudscraper

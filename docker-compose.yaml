@@ -61,3 +61,7 @@ services:
     restart: always
 
     env_file: .env
+  
+  version-checker-cron:
+    build: ./services/version-checker-cron/
+    env_file: .env
