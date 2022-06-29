@@ -120,7 +120,7 @@ class Database:
             }
         )
         
-    def get_latest_app(self,package_name,token_generator):
+    def get_latest_app(self,package_name,blog_url,token_generator):
         data = {}
         tmp = {}
         data["package_name"] = package_name
@@ -156,8 +156,11 @@ class Database:
         tmp_data = {
             "download_filename":file["filename"] + ".apk",
             "folder_name":app["_id"],
-            "server_file_name":file["version_unique_id"] + ".apk"
+            "server_file_name":file["version_unique_id"] + ".apk",
         }
+        
+        if blog_url != None:
+            tmp_data["redirect"] = blog_url
         
         download_token = token_generator.generate_ttl_token(tmp_data)
         

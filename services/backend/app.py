@@ -221,7 +221,9 @@ def app_latest():
     
     package_name = data["package_name"]
     
-    data = db.get_latest_app(package_name,token_generator)
+    blog_url = data.get("blog_url",None)
+    
+    data = db.get_latest_app(package_name,blog_url,token_generator)
     
     return jsonify(data),200
 
@@ -281,8 +283,7 @@ def download_file(token):
     if data["status"] == True:
         return send_from_directory(f'/downloads/{folder_name}',server_file_name, as_attachment=True,download_name=download_filename)
     else:
-        return redirect("https://latestmodapks.com",code=302)
-    
+        return redirect(data["redirect"],code=302)
 
 if __name__ == '__main__':
     app.run(debug=True)

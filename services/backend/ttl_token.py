@@ -7,6 +7,7 @@ class TllToken:
         self.salt = "apk.file.download"
         self.time_to_live = 1 * 60
         self.s = URLSafeTimedSerializer(self.secret_key,salt=self.salt.encode("utf-8"))
+        self.default_redirect_on_expire = "https://latestmodapks.com"
     
     def generate_ttl_token(self,data):
         timestamp = datetime.now()
@@ -17,7 +18,8 @@ class TllToken:
     def decode_ttl_token(self,token):
         data = self.s.loads(token)
         data["timestamp"] = datetime.fromtimestamp(data["timestamp"])
-        
+        if not "redirect" in data:
+            data["redirect"] = self.default_redirect_on_expire
         now = datetime.now()
         
         seconds = (now - data["timestamp"]).seconds
