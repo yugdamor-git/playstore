@@ -10,8 +10,6 @@ class Downloader:
         self.db = Database()
         self.downloads = Path("/downloads")
         
-        
-
     def save_file(self,package_id,file_id,data_bytes):
         
         folder_path = self.downloads.joinpath(package_id)
@@ -43,7 +41,6 @@ class Downloader:
             if status == True:
                 self.save_file(package_id,file_id,file_bytes)
                 self.db.files.update_one({"_id":application["_id"]},{"$set":{"status":"active"}})
-                
             else:
                 self.db.files.update_one({"_id":application["_id"]},{"$set":{"error_count":application["error_count"] + 1}})
                 

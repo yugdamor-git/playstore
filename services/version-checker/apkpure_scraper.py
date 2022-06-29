@@ -3,7 +3,7 @@ from bs4 import BeautifulSoup
 import cloudscraper
 from helper import string_to_datetime
 import requests
-
+import os
 
 class ApkpureScraper:
     def __init__(self) -> None:
@@ -18,10 +18,13 @@ class ApkpureScraper:
         
         self.base_url = "https://apkpure.com"
         
+        proxy = os.environ.get("PROXY")
+        
         self.proxy = {
-            "http":"http://63.141.236.210:19001",
-            "https":"http://63.141.236.210:19001"
+            "http":f'http://{proxy}',
+            "https":f'http://{proxy}'
         }
+
 
         self.headers = {
         'authority': 'apkpure.com',

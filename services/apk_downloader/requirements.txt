@@ -1,6 +1,0 @@
-flask
-bs4
-cloudscraper
-pymongo
-jsonschema
-python-dateutil

@@ -1,6 +1,6 @@
 from bs4 import BeautifulSoup
 from playwright.sync_api import sync_playwright
-
+import os
 class PlaywrightDriver:
     def __init__(self) -> None:
         
@@ -11,12 +11,17 @@ class PlaywrightDriver:
         self.page = None
         
         self.headless = True
+        
+        self.proxy = os.environ.get("PROXY")
+        
+        
+
     
     def start(self):
         
         self.playwright = sync_playwright().start()
         
-        self.browser = self.playwright.chromium.launch(headless=self.headless,proxy={"server":"http://63.141.236.210:19001"})
+        self.browser = self.playwright.chromium.launch(headless=self.headless,proxy={"server":f'http://{self.proxy}'})
         
         self.page = self.browser.new_page(user_agent="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.51 Safari/537.36")
     
