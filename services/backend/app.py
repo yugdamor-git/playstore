@@ -1,4 +1,4 @@
-from flask import Flask, Response, jsonify, redirect, request,send_from_directory
+from flask import Flask, Response, jsonify, redirect, request, send_from_directory
 from database import Database
 from flask_cors import CORS
 
@@ -6,7 +6,7 @@ from pathlib import Path
 import shutil
 from apkpure_scraper import ApkpureScraper
 from ttl_token import TllToken
-from datetime import datetime,timedelta
+from datetime import datetime, timedelta
 
 
 import json
@@ -23,6 +23,7 @@ from flask_jwt_extended import (
 from bson.objectid import ObjectId
 from flask_bcrypt import Bcrypt
 
+
 class JSONEncoder(json.JSONEncoder):
     ''' extend json-encoder class'''
 
@@ -34,6 +35,7 @@ class JSONEncoder(json.JSONEncoder):
         if isinstance(o, datetime):
             return str(o)
         return json.JSONEncoder.default(self, o)
+
 
 app = Flask(__name__)
 
@@ -53,7 +55,8 @@ app.json_encoder = JSONEncoder
 
 @jwt.unauthorized_loader
 def unauthorized_response(callback):
-    return jsonify({"auth":False}),401
+    return jsonify({"auth": False}), 401
+
 
 db = Database()
 
@@ -62,28 +65,25 @@ token_generator = TllToken()
 scraper = ApkpureScraper()
 
 
-
-
 @app.route('/auth', methods=['POST'])
 def auth_user():
     ''' auth endpoint '''
-    
+
     data = request.get_json()["data"]
-    
+
     u = list(db.users.find({'email': data['email']}))
-    
+
     if len(u) == 0:
         return jsonify({
-            "status":False,
-            "message":"the email address is invalid.",
-            "data":None
+            "status": False,
+            "message": "the email address is invalid.",
+            "data": None
         })
-    
-    
+
     user = u[0]
-    
+
     pwd = user.get("password")
-    
+
     if user and flask_bcrypt.check_password_hash(pwd, data['password']):
         del user['password']
         del data['password']
@@ -94,7 +94,8 @@ def auth_user():
         return jsonify({'status': True, 'data': user}), 200
     else:
         return jsonify({'status': False, 'message': 'invalid password'}), 200
-    
+
+
 @app.route('/refresh', methods=['POST'])
 @jwt_required()
 def refresh():
@@ -110,23 +111,22 @@ def refresh():
 @jwt_required()
 def register():
     ''' register user endpoint '''
-    
+
     data = request.get_json()["data"]
-    
+
     user = list(db.users.find({'email': data['email']}))
-    
+
     if len(user) != 0:
         return jsonify({
-            "status":False,
-            "message":"user already exists.",
-            "data":None
+            "status": False,
+            "message": "user already exists.",
+            "data": None
         })
-    
-   
+
     data['password'] = flask_bcrypt.generate_password_hash(data['password'])
-    
+
     db.users.insert_one(data)
-    
+
     return jsonify({'status': True, 'msg': 'User created successfully!'}), 200
 
 
@@ -136,156 +136,159 @@ def register():
 @jwt_required()
 def get_suggestion():
     keyword = request.args.get("q")
-    
-    status,data = scraper.get_suggestions(keyword)
-    
+
+    status, data = scraper.get_suggestions(keyword)
+
     return jsonify({
-        "data":data,
-        "status":status
+        "data": data,
+        "status": status
     })
 
 # add application in database
 
 
-
-@app.route('/add-application',methods=["POST"])
+@app.route('/add-application', methods=["POST"])
 @jwt_required()
 def add_application():
     data = request.json["data"]
-    
-    status,id,message = db.add_application(data)
-    
+
+    status, id, message = db.add_application(data)
+
     return jsonify({
-        "status":status,
-        "message":message,
-        "data":{
-            "_id":id
+        "status": status,
+        "message": message,
+        "data": {
+            "_id": id
         }
     })
 
-@app.route('/icon/<id>',methods=["GET"])
+
+@app.route('/icon/<id>', methods=["GET"])
 def fetch_icon(id):
-    return send_from_directory(f'/downloads/{id}',"icon.png")
+    return send_from_directory(f'/downloads/{id}', "icon.png")
 
 
-@app.route('/search-applications',methods=["GET"])
+@app.route('/search-applications', methods=["GET"])
 @jwt_required()
 def search_applications():
     default_limit = 20
     limit = request.args.get("limit")
     if limit != None:
         default_limit = int(limit)
-        
+
     keyword = request.args.get("keyword")
-    
-    data = db.search_applications(keyword,default_limit)
-    
+
+    data = db.search_applications(keyword, default_limit)
+
     return jsonify({
-        "status":True,
-        "message":"",
-        "data":data
+        "status": True,
+        "message": "",
+        "data": data
     })
 
 
-@app.route('/delete-application',methods=["GET"])
+@app.route('/delete-application', methods=["GET"])
 @jwt_required()
 def delete_application():
     package_id = request.args.get("package_id")
-    
-    status,message = db.delete_application(package_id)
-    
+
+    status, message = db.delete_application(package_id)
+
     return jsonify({
-        "status":status,
-        "message":message
+        "status": status,
+        "message": message
     })
 
 
-@app.route('/update-application',methods=["POST"])
+@app.route('/update-application', methods=["POST"])
 @jwt_required()
 def update_application():
     package_id = request.args.get("package_id")
-    
-    data = request.json["data"]
-    
-    db.update_application(package_id,data)
-    
-    return jsonify({
-        "status":True,
-        "message":"data updated"
-    }),200
 
-@app.route('/app-latest',methods=["POST"])
+    data = request.json["data"]
+
+    db.update_application(package_id, data)
+
+    return jsonify({
+        "status": True,
+        "message": "data updated"
+    }), 200
+
+
+@app.route('/app-latest', methods=["POST"])
 # @jwt_required()
 def app_latest():
     data = request.get_json()["data"]
-    
+
     package_name = data["package_name"]
-    
-    blog_url = data.get("blog_url",None)
-    
-    download_link_expire_seconds = data.get("download_link_expire_seconds",600)
-    
-    data = db.get_latest_app(package_name,blog_url,download_link_expire_seconds,token_generator)
-    
-    return jsonify(data),200
+
+    blog_url = data.get("blog_url", None)
+
+    download_link_expire_seconds = data.get(
+        "download_link_expire_seconds", 600)
+
+    data = db.get_latest_app(package_name, blog_url,
+                             download_link_expire_seconds, token_generator)
+
+    return jsonify(data), 200
 
 
-@app.route('/get-recent-application',methods=["GET"])
+@app.route('/get-recent-application', methods=["GET"])
 @jwt_required()
 def get_recent_application():
     default_limit = 20
-    
+
     limit = request.args.get("limit")
-    
+
     if limit != None:
         default_limit = int(limit)
-    
+
     recent_application = db.get_recent_application(default_limit)
-    
+
     return jsonify({
-        "status":True,
-        "data":recent_application
-    }),200
+        "status": True,
+        "data": recent_application
+    }), 200
 
 
-@app.route('/get-application-details',methods=["GET"])
+@app.route('/get-application-details', methods=["GET"])
 @jwt_required()
 def get_application_details():
     package_id = request.args.get("package_id")
-    
-    status,app_details = db.get_application_details(package_id)
-    
+
+    status, app_details = db.get_application_details(package_id)
+
     for file in app_details["files"]:
         data = {
-            "download_filename":file["filename"] + ".apk",
-            "folder_name":package_id,
-            "server_file_name":file["version_unique_id"] + ".apk"
+            "download_filename": file["filename"] + ".apk",
+            "folder_name": package_id,
+            "server_file_name": file["version_unique_id"] + ".apk"
         }
-        
+
         token = token_generator.generate_ttl_token(data)
-        
+
         file["download_token"] = token
-    
-    
+
     return jsonify({
-        "status":status,
-        "data":app_details
-    }),200
+        "status": status,
+        "data": app_details
+    }), 200
 
 
 @app.route('/download/<token>')
 def download_file(token):
-    
+
     data = token_generator.decode_ttl_token(token)
-    
+
     download_filename = data["download_filename"]
     folder_name = data["folder_name"]
     server_file_name = data["server_file_name"]
-    
+
     if data["status"] == True:
-        return send_from_directory(f'/downloads/{folder_name}',server_file_name, as_attachment=True,download_name=download_filename)
+        return send_from_directory(f'/downloads/{folder_name}', server_file_name, as_attachment=True, download_name=download_filename)
     else:
-        return redirect(data["redirect"],code=302)
+        return redirect(data["redirect"], code=302)
+
 
 if __name__ == '__main__':
     app.run(debug=True)
