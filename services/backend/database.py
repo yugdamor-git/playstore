@@ -120,7 +120,7 @@ class Database:
             }
         )
         
-    def get_latest_app(self,package_name,blog_url,token_generator):
+    def get_latest_app(self,package_name,blog_url,download_link_expire_seconds,token_generator):
         data = {}
         tmp = {}
         data["package_name"] = package_name
@@ -157,6 +157,7 @@ class Database:
             "download_filename":file["filename"] + ".apk",
             "folder_name":app["_id"],
             "server_file_name":file["version_unique_id"] + ".apk",
+            "download_link_expire_seconds":download_link_expire_seconds
         }
         
         if blog_url != None:

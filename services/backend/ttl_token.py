@@ -23,7 +23,7 @@ class TllToken:
         now = datetime.now()
         
         seconds = (now - data["timestamp"]).seconds
-        if seconds > self.time_to_live:
+        if seconds > data["download_link_expire_seconds"]:
             data["status"] = False
         else:
             data["status"] = True 

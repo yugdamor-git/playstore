@@ -223,7 +223,9 @@ def app_latest():
     
     blog_url = data.get("blog_url",None)
     
-    data = db.get_latest_app(package_name,blog_url,token_generator)
+    download_link_expire_seconds = data.get("download_link_expire_seconds",600)
+    
+    data = db.get_latest_app(package_name,blog_url,download_link_expire_seconds,token_generator)
     
     return jsonify(data),200
 
