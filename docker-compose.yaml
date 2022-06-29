@@ -25,7 +25,8 @@ services:
     ports: 
         - "6001:5000"
     restart: always
-
+    depends_on:
+      - mongodb
     env_file: .env
 
   frontend:
@@ -33,7 +34,8 @@ services:
     build: ./services/frontend
 
     restart: always
-    
+    depends_on:
+      - backend
     ports:
         - "3000:3000"
 
@@ -41,7 +43,8 @@ services:
   
   downloader:
     build: ./services/downloader/
-
+    depends_on:
+      - mongodb
     volumes:
       - ./services/downloads:/downloads
     restart: always
@@ -50,18 +53,23 @@ services:
   
   url-extractor:
     build: ./services/url-extractor/
-
+    depends_on:
+      - mongodb
     restart: always
 
     env_file: .env
 
   version-checker:
     build: ./services/version-checker/
-
+    depends_on:
+      - mongodb
     restart: always
 
     env_file: .env
   
   version-checker-cron:
+    restart: always
+    depends_on:
+      - mongodb
     build: ./services/version-checker-cron/
     env_file: .env

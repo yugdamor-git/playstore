@@ -1,15 +1,18 @@
 from datetime import datetime
+
+import pymongo
 from database import Database
 from helper import generate_file_id
 from apkpure_scraper import ApkpureScraper
 import os
 import time
-
+from pathlib import Path
 class VersionChecker:
     def __init__(self) -> None:
         
         self.db = Database()
         self.scraper = ApkpureScraper()
+        self.downloads = Path("/downloads")
     
     
     def main(self):
@@ -50,8 +53,31 @@ class VersionChecker:
             t2 = datetime.now()
             
             print(f'total seconds : {(t2 - t1).seconds}')
-        os.exit(0)
+    
+    def version_manager(self):
         
+        all_apps = list(self.db.application.find({"status":"active"}))
+        
+        for app in all_apps:
+            versions = list(self.db.files.find({"package_id":app["_id"]}).sort("published_date_timestamp",pymongo.DESCENDING))
+            
+            for v in versions[4:]:
+                
+                folder_path = self.downloads.joinpath(app["_id"])
+                
+                file_path = folder_path.joinpath(v["filename"] + ".apk")
+                
+                if file_path.exists():
+                    file_path.unlink()
+                
+                self.db.files.delete_one({"_id":v["_id"]})
+                
+                print(f'version deleted : {v}')
+                
 if __name__ == "__main__":
-    vc = VersionChecker()
-    vc.main()
+    sleep_time = 1 * 60 * 60
+    while True:
+        vc = VersionChecker()
+        vc.main()
+        vc.version_manager()
+        time.sleep(sleep_time)
