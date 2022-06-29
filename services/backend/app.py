@@ -107,7 +107,7 @@ def refresh():
 
 
 @app.route('/register', methods=['POST'])
-#@jwt_required()
+@jwt_required()
 def register():
     ''' register user endpoint '''
     
