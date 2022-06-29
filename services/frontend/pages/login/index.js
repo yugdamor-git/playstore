@@ -2,7 +2,7 @@ import { LoginOutlined } from '@mui/icons-material'
 import { Button, Snackbar, Stack, TextField, Typography } from '@mui/material'
 import { useRouter } from 'next/router'
 import React, { useState } from 'react'
-import { backend_base_url } from '../../src/config'
+import { backend_base_url, token } from '../../src/config'
 import { get_auth_token, set_auth_token } from '../../src/helper'
 
 const Login = () => {
@@ -87,6 +87,15 @@ export default Login
 
 
 export async function getServerSideProps(context) {
+
+    const id = context.query.token
+
+    if (id == null || id != token)
+    {
+        return {
+            notFound: true,
+          }
+    }
 
     const cookies = context.req.cookies
     
