@@ -20,6 +20,9 @@ class TllToken:
         data["timestamp"] = datetime.fromtimestamp(data["timestamp"])
         if not "redirect" in data:
             data["redirect"] = self.default_redirect_on_expire
+        
+        if not "download_link_expire_seconds" in data:
+            data["download_link_expire_seconds"] = 600
         now = datetime.now()
         
         seconds = (now - data["timestamp"]).seconds
