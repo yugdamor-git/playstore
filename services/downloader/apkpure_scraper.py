@@ -130,26 +130,6 @@ class ApkpureScraper:
     def download_apk(self,url,timeout):
         print(f'downloading : {url}')
         error_message = "no error"
-        # soup = None
-        # for i in range(0,self.max_retry):
-        #     try:
-        #         response = self.wd.get(url,proxies=self.proxy,timeout=3)
-        #         print(response.status_code)
-        #         if response.status_code == 200:
-        #             soup = BeautifulSoup(response.text)
-        #             break
-        #         # self.driver.get(url)
-        #         # soup = BeautifulSoup(self.driver.page_source)
-        #         break
-        #     except:
-        #         pass
-                
-        # if soup == None:
-        #     error_message = "soup is none"
-        #     return False,None,None,error_message
-
-        # download_link = soup.find("a",{"id":"download_link"}).get("href")
-        # error_message =""
         download_link = url
         print(f'download link : {download_link}')
         file_bytes = None
@@ -167,6 +147,10 @@ class ApkpureScraper:
                 print(f'error : {str(e)}')
         
         if file_bytes == None:
+            error_message = "file bytes are none"
+            return False,None,download_link,error_message
+        
+        if len(file_bytes) == 0:
             error_message = "file bytes are none"
             return False,None,download_link,error_message
         
