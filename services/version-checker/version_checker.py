@@ -16,6 +16,9 @@ class VersionChecker:
         
         apps = list(self.db.application.find({"status":"scraping","error_count":{"$lt":10}}))
         
+        if len(apps) == 0:
+            print(f'no app in scraping status')
+        
         for app in apps:
             print(f'processing -> {app["_id"]}')
             t1 = datetime.now()
@@ -50,7 +53,7 @@ class VersionChecker:
             t2 = datetime.now()
             
             print(f'total seconds : {(t2 - t1).seconds}')
-        os.exit(0)
+        # os.exit(0)
         
 if __name__ == "__main__":
     max_run = 10
