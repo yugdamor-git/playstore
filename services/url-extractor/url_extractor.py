@@ -14,12 +14,19 @@ class DownloadUrlExtractor:
         if "https://download.apkpure.com" in url:
             download_url = response.headers["location"]
             print(download_url)
+            
+            apk_type = "apk"
+            
+            if "XAPK" in download_url or "xapk" in download_url:
+                apk_type = "xapk"
+            
             self.db.files.update_one(
                 {"_id":self.current_id},
                 {
                     "$set":{
                         "status":"downloading",
-                        "app_download_url":download_url
+                        "app_download_url":download_url,
+                        "apk_type":apk_type
                     }
                 }
             )

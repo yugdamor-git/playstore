@@ -139,7 +139,6 @@ class Database:
 
         data["app_name"] = app["title"]
         data["mode_type"] = "No"
-        data["file_type"] = "Apk"
 
         files = list(self.files.find({"package_id": app["_id"]}).sort(
             "published_on_timestamp", pymongo.DESCENDING))
@@ -150,7 +149,8 @@ class Database:
         tmp["version_status"] = True
 
         file = files[0]
-
+        apk_type = file["apk_type"]
+        data["file_type"] =apk_type
         data["file_size"] = file["size_text"]
         data["version_number"] = file["version"]
 
@@ -158,9 +158,9 @@ class Database:
             "%B %d,%Y").title()
 
         tmp_data = {
-            "download_filename": file["filename"] + ".apk",
+            "download_filename": file["filename"] + apk_type,
             "folder_name": app["_id"],
-            "server_file_name": file["version_unique_id"] + ".apk",
+            "server_file_name": file["version_unique_id"] + apk_type,
             "download_link_expire_seconds": download_link_expire_seconds
         }
 

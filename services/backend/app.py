@@ -260,9 +260,9 @@ def get_application_details():
 
     for file in app_details["files"]:
         data = {
-            "download_filename": file["filename"] + ".apk",
+            "download_filename": file["filename"] + file["apk_type"],
             "folder_name": package_id,
-            "server_file_name": file["version_unique_id"] + ".apk"
+            "server_file_name": file["version_unique_id"] + file["apk_type"]
         }
 
         token = token_generator.generate_ttl_token(data)

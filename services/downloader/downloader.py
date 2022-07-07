@@ -10,13 +10,13 @@ class Downloader:
         self.db = Database()
         self.downloads = Path("/downloads")
         
-    def save_file(self,package_id,file_id,data_bytes):
+    def save_file(self,package_id,file_id,data_bytes,apk_type):
         
         folder_path = self.downloads.joinpath(package_id)
         if not folder_path.exists():
             folder_path.mkdir()
         
-        file_path = folder_path.joinpath(f'{file_id}.apk')
+        file_path = folder_path.joinpath(f'{file_id}.{apk_type}')
         
         if file_path.exists() == True:
             file_path.unlink()
@@ -38,8 +38,9 @@ class Downloader:
             status,file_bytes,download_url,error_message = self.scraper.download_apk(app_download_url,time_out)
             print(download_url)
             print(error_message)
+            apk_type = application["apk_type"]
             if status == True:
-                self.save_file(package_id,file_id,file_bytes)
+                self.save_file(package_id,file_id,file_bytes,apk_type)
                 self.db.files.update_one({"_id":application["_id"]},{"$set":{"status":"active"}})
             else:
                 self.db.files.update_one({"_id":application["_id"]},{"$set":{"error_count":application["error_count"] + 1}})
