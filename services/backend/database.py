@@ -158,9 +158,9 @@ class Database:
             "%B %d,%Y").title()
 
         tmp_data = {
-            "download_filename": file["filename"] + apk_type,
+            "download_filename": file["filename"] + "." + apk_type,
             "folder_name": app["_id"],
-            "server_file_name": file["version_unique_id"] + apk_type,
+            "server_file_name": file["version_unique_id"] + "." + apk_type,
             "download_link_expire_seconds": download_link_expire_seconds
         }
 
