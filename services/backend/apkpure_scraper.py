@@ -2,6 +2,7 @@ import json
 from bs4 import BeautifulSoup
 import cloudscraper
 from helper import string_to_datetime
+import os
 
 
 class ApkpureScraper:
@@ -12,6 +13,13 @@ class ApkpureScraper:
         self.max_retry = 3
 
         self.base_url = "https://apkpure.com"
+        
+        proxy = os.environ.get("PROXY")
+        
+        self.proxy = {
+            "http":f'http://{proxy}',
+            "https":f'http://{proxy}'
+        }
 
     def get_suggestions(self, keyword):
         url = f'https://m.apkpure.com/api/v1/search_suggestion_new?key={keyword}'
@@ -122,7 +130,8 @@ class ApkpureScraper:
         soup = None
         
         for i in range(0, self.max_retry):
-            response = self.wd.get(url)
+            response = self.wd.get(url,proxies=self.proxy)
+            print(response.status_code)
             if response.status_code == 200:
                 try:
                     soup = BeautifulSoup(response.text)
