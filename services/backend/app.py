@@ -279,11 +279,12 @@ def get_application_details():
 def download_file(token):
 
     data = token_generator.decode_ttl_token(token)
-
+    print(data)
     download_filename = data["download_filename"]
     folder_name = data["folder_name"]
     server_file_name = data["server_file_name"]
 
+    
     if data["status"] == True:
         return send_from_directory(f'/downloads/{folder_name}', server_file_name, as_attachment=True, download_name=download_filename)
     else:
