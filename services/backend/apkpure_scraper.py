@@ -144,7 +144,7 @@ class ApkpureScraper:
         
         for app in self.extract_suggestions_v2(soup):
             data.append(app)
-        return data
+        return True,data
     
     def scrape_app_details(self, url):
         soup = None
