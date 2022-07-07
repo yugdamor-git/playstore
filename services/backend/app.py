@@ -137,7 +137,7 @@ def register():
 def get_suggestion():
     keyword = request.args.get("q")
 
-    status, data = scraper.get_suggestions(keyword)
+    status, data = scraper.get_suggestions_v2(keyword)
 
     return jsonify({
         "data": data,

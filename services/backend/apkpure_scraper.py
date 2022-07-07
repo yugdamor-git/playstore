@@ -48,7 +48,95 @@ class ApkpureScraper:
 
                 data.append(s)
         return True, data
+    def extract_suggestions_v2(self,soup):
+        apps = []
+        
+        try:
+            first = soup.find("div",{"class":"first"})
+            a_tag = first.find("a",{"class":"first-info"})
+            title = first.find("div",{"class":"info"}).find("p").text.strip()
+            img_tag = first.find("img")
+            package_name = first.get("data-dt-app")
+            total_install = None
+            icon_url = None
+            
+            if img_tag != None:
+                icon_url = img_tag.get("src")
+            tags = []
+            
+            package_url = "https://apkpure.com" + a_tag.get("href")
+            
+            apps.append({
+                "package_name":package_name,
+                "total_install":total_install,
+                "icon_url":icon_url,
+                "title":title,
+                "package_url":package_url,
+                "tags":tags,
+            })
+            
+        except:
+            pass
+        try:
+            list_app = soup.find("div",{"class":"list app-list"}).find("ul")
+            
+            for app in list_app.find("li"):
+                try:
+                    a_tag = app.find("a")
+                    
+                    href = a_tag.get("href")
+                    
+                    package_name = href.split("/")[-1]
+                    
+                    package_url = "https://apkpure.com" + href
+                    
+                    icon_url = a_tag.find("img").get("src")
+                    
+                    title = a_tag.find("div",{"class":"r"}).find("p").text.strip()
+                    
+                    tags = []
+                    
+                    total_install = None
+                    
+                    apps.append({
+                    "package_name":package_name,
+                    "total_install":total_install,
+                    "icon_url":icon_url,
+                    "title":title,
+                    "package_url":package_url,
+                    "tags":tags,
+                    })
+                except Exception as e:
+                    print(f'error : {str(e)}')
+        except:
+            pass
+        
+        
+        return apps
+    
+    def get_suggestions_v2(self,keyword):
+        url = f'https://m.apkpure.com/search?q={keyword}'
+        
+        data = []
+        
+        soup = None
+        
+        for i in range(0, self.max_retry):
+            response = self.wd.get(url)
+            if response.status_code == 200:
+                try:
+                    soup = BeautifulSoup(response.text)
+                    break
+                except:
+                    pass
 
+        if soup == None:
+            return False, data
+        
+        for app in self.extract_suggestions_v2(soup):
+            data.append(app)
+        return data
+    
     def scrape_app_details(self, url):
         soup = None
         data = {}
@@ -134,6 +222,7 @@ class ApkpureScraper:
 if __name__ == "__main__":
     scraper = ApkpureScraper()
 
+    # print(scraper.get_suggestions_v2("nomao camera"))
     # for i in scraper.get_suggestions("what"):
     #     print(i)
 
