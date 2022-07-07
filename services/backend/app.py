@@ -10,6 +10,7 @@ from datetime import datetime, timedelta
 
 
 import json
+import logging
 
 from flask_jwt_extended import (
     create_access_token,
@@ -40,6 +41,11 @@ class JSONEncoder(json.JSONEncoder):
 app = Flask(__name__)
 
 CORS(app)
+
+gunicorn_logger = logging.getLogger('gunicorn.error')
+app.logger.handlers = gunicorn_logger.handlers
+app.logger.setLevel(gunicorn_logger.level)
+
 
 app.config["JWT_SECRET_KEY"] = "3bc27a33-ac7d-4f15-be44-2748de7c9d57"
 
@@ -279,7 +285,7 @@ def get_application_details():
 def download_file(token):
 
     data = token_generator.decode_ttl_token(token)
-    print(data)
+    app.logger.info(data)
     download_filename = data["download_filename"]
     folder_name = data["folder_name"]
     server_file_name = data["server_file_name"]
